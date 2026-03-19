@@ -28,7 +28,7 @@ EVE_VERIFY_URL  = 'https://esi.evetech.net/verify/'
 EVE_SCOPE       = 'publicData'
 
 # ── App ────────────────────────────────────────────────────────────────────
-app = Flask(__name__)
+app = Flask(__name__, static_folder='assets', static_url_path='/assets')
 app.secret_key = os.environ.get('FLASK_SECRET', secrets.token_hex(32))
 
 
@@ -234,7 +234,7 @@ def auth_logout():
 @app.get('/')
 def index():
     char_id, char_name, corp_name = current_char()
-    return render_template('bs_form.html', character_name=char_name, corp_name=corp_name)
+    return render_template('index.html', character_name=char_name, corp_name=corp_name)
 
 
 @app.post('/request')
