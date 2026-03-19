@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Solutions — Build Service [MOCKUP]</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 2vh 2vw;
+            background: #0a0a0a;
+            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            color: #cce6ff;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #001a2e 0%, #002040 50%, #001530 100%);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(0,255,255,0.3);
+            margin-bottom: 0;
+        }
+        .header-corp {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: #aabbcc;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #00ffff;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.3);
+        }
+        .header-sub {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            color: #aabbcc;
+            letter-spacing: 2px;
+        }
+        .mockup-banner {
+            display: inline-block;
+            margin-top: 10px;
+            background: rgba(255,204,68,0.15);
+            border: 1px solid rgba(255,204,68,0.5);
+            color: #ffcc44;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            padding: 4px 16px;
+        }
+
+        /* ── SSO Bar ── */
+        .sso-bar {
+            background: rgba(0,217,255,0.05);
+            border-bottom: 1px solid rgba(0,217,255,0.15);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+        }
+        .sso-bar .char-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            color: #00ff88;
+        }
+        .sso-bar .char-corp {
+            font-size: 13px;
+            color: #aabbcc;
+        }
+        .btn-sso {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            background: rgba(0,217,255,0.12);
+            border: 1px solid rgba(0,217,255,0.4);
+            color: #00d9ff;
+            padding: 7px 20px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+        .btn-sso:hover { background: rgba(0,217,255,0.22); }
+
+        /* ── Main tabs ── */
+        .main-tabs {
+            display: flex;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(0,217,255,0.2);
+        }
+        .main-tab {
+            padding: 18px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: #668899;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .main-tab:hover { color: #00ffff; background: rgba(0,255,255,0.04); }
+        .main-tab.active {
+            color: #00ffff;
+            border-bottom-color: #00ffff;
+            background: rgba(0,255,255,0.08);
+        }
+
+        /* ── Tab content ── */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Cards / sections ── */
+        .section {
+            background: linear-gradient(135deg, #001a2e 0%, #002040 50%, #001530 100%);
+            border: 1px solid rgba(0,217,255,0.2);
+            margin: 20px 0;
+            padding: 28px 32px;
+        }
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #00d9ff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0 0 6px 0;
+        }
+        .section-sub {
+            font-size: 14px;
+            color: #668899;
+            margin: 0 0 22px 0;
+        }
+
+        /* ── Form elements ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 32px;
+        }
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px 32px;
+        }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field.full { grid-column: 1 / -1; }
+        label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #aabbcc;
+            text-transform: uppercase;
+        }
+        input[type="text"], input[type="number"], input[type="date"],
+        select, textarea {
+            background: rgba(0,20,40,0.8);
+            border: 1px solid rgba(0,217,255,0.3);
+            color: #cce6ff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #00d9ff;
+            box-shadow: 0 0 8px rgba(0,217,255,0.2);
+        }
+        select option { background: #001830; }
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* Item search */
+        .item-search-wrap { position: relative; }
+        .item-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0; right: 0;
+            background: #001830;
+            border: 1px solid rgba(0,217,255,0.4);
+            border-top: none;
+            z-index: 100;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .item-dropdown div {
+            padding: 9px 14px;
+            font-size: 15px;
+            cursor: pointer;
+            color: #cce6ff;
+            border-bottom: 1px solid rgba(0,217,255,0.1);
+        }
+        .item-dropdown div:hover { background: rgba(0,217,255,0.1); color: #00ffff; }
+        .item-category {
+            font-size: 12px;
+            color: #668899;
+            margin-left: 8px;
+        }
+
+        /* Toggle row */
+        .toggle-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+        .toggle-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            padding: 9px 22px;
+            cursor: pointer;
+            border: 1px solid rgba(0,217,255,0.35);
+            background: transparent;
+            color: #668899;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            background: rgba(0,217,255,0.15);
+            border-color: #00d9ff;
+            color: #00d9ff;
+        }
+
+        /* Doctrine fit card */
+        .fit-card {
+            background: rgba(0,217,255,0.05);
+            border: 1px solid rgba(0,217,255,0.2);
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fit-card:hover {
+            background: rgba(0,217,255,0.1);
+            border-color: rgba(0,217,255,0.5);
+        }
+        .fit-card.selected {
+            background: rgba(0,217,255,0.15);
+            border-color: #00d9ff;
+        }
+        .fit-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            color: #00d9ff;
+        }
+        .fit-class { font-size: 14px; color: #aabbcc; }
+        .fit-items-count { font-size: 13px; color: #668899; }
+        .fit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            padding: 14px 36px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(0,150,200,0.2));
+            border: 2px solid #00d9ff;
+            color: #00ffff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, rgba(0,217,255,0.4), rgba(0,150,200,0.3));
+            box-shadow: 0 0 20px rgba(0,217,255,0.4);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(0,217,255,0.3);
+            color: #668899;
+        }
+        .btn-secondary:hover { border-color: #00d9ff; color: #00d9ff; }
+        .btn-success {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.5);
+            color: #00ff88;
+        }
+        .btn-success:hover { background: rgba(0,255,136,0.2); }
+        .btn-warn {
+            background: rgba(255,204,68,0.1);
+            border: 1px solid rgba(255,204,68,0.5);
+            color: #ffcc44;
+        }
+        .btn-sm {
+            font-size: 11px;
+            padding: 7px 16px;
+            letter-spacing: 1px;
+        }
+
+        .form-actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        /* ── Status lookup ── */
+        .status-lookup {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+        .status-lookup input { flex: 0 0 260px; }
+
+        /* Status tracker */
+        .status-track {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 24px 0 32px;
+        }
+        .status-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        .status-step::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(0,217,255,0.2);
+            z-index: 0;
+        }
+        .status-step:last-child::after { display: none; }
+        .step-dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,217,255,0.3);
+            background: #001020;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .step-dot.done {
+            border-color: #00ff88;
+            background: rgba(0,255,136,0.15);
+            color: #00ff88;
+        }
+        .step-dot.active {
+            border-color: #00d9ff;
+            background: rgba(0,217,255,0.2);
+            color: #00d9ff;
+            box-shadow: 0 0 12px rgba(0,217,255,0.5);
+        }
+        .step-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 1px;
+            color: #668899;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .step-label.active { color: #00d9ff; }
+        .step-label.done { color: #00ff88; }
+        .status-step.done::after { background: rgba(0,255,136,0.4); }
+
+        .request-detail {
+            background: rgba(0,20,40,0.6);
+            border: 1px solid rgba(0,217,255,0.2);
+            padding: 20px 24px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .detail-item label { font-size: 10px; color: #668899; display: block; margin-bottom: 4px; letter-spacing: 1px; }
+        .detail-item .val { font-size: 16px; color: #cce6ff; }
+        .detail-item .val.isk { color: #ffcc44; }
+        .detail-item .val.green { color: #00ff88; }
+
+        /* ── Tables ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+        .data-table thead th {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #668899;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(0,217,255,0.2);
+            background: rgba(0,217,255,0.05);
+            white-space: nowrap;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid rgba(0,217,255,0.08);
+            transition: background 0.15s;
+        }
+        .data-table tbody tr:hover { background: rgba(0,217,255,0.05); }
+        .data-table td {
+            padding: 12px 14px;
+            color: #cce6ff;
+            vertical-align: middle;
+        }
+        .data-table td.isk { color: #ffcc44; }
+        .data-table td.green { color: #00ff88; }
+        .data-table td.muted { color: #668899; }
+
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            text-transform: uppercase;
+        }
+        .badge-pending  { background: rgba(255,204,68,0.12); border: 1px solid rgba(255,204,68,0.4); color: #ffcc44; }
+        .badge-quoted   { background: rgba(0,217,255,0.10); border: 1px solid rgba(0,217,255,0.35); color: #00d9ff; }
+        .badge-assigned { background: rgba(160,100,255,0.12); border: 1px solid rgba(160,100,255,0.4); color: #bb88ff; }
+        .badge-building { background: rgba(255,140,0,0.12); border: 1px solid rgba(255,140,0,0.4); color: #ff9922; }
+        .badge-delivered{ background: rgba(0,255,136,0.10); border: 1px solid rgba(0,255,136,0.4); color: #00ff88; }
+        .badge-complete { background: rgba(0,255,136,0.18); border: 1px solid rgba(0,255,136,0.6); color: #00ff88; }
+        .badge-simple   { background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.25); color: #00aacc; }
+        .badge-complex  { background: rgba(255,140,0,0.1); border: 1px solid rgba(255,140,0,0.35); color: #ff9922; }
+
+        /* Complexity breakdown */
+        .subtasks {
+            background: rgba(0,10,30,0.8);
+            border-left: 3px solid rgba(160,100,255,0.5);
+            padding: 12px 16px;
+            margin: 8px 0;
+        }
+        .subtask-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(0,217,255,0.08);
+            font-size: 14px;
+        }
+        .subtask-row:last-child { border-bottom: none; }
+
+        /* Divider */
+        hr { border: none; border-top: 1px solid rgba(0,217,255,0.15); margin: 24px 0; }
+
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 13px;
+            color: #668899;
+            background: rgba(255,204,68,0.06);
+            border: 1px solid rgba(255,204,68,0.2);
+            padding: 12px 18px;
+            margin-top: 16px;
+        }
+        .disclaimer strong { color: #ffcc44; }
+
+        /* Info row */
+        .info-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 18px;
+        }
+        .info-card {
+            flex: 1;
+            background: rgba(0,217,255,0.04);
+            border: 1px solid rgba(0,217,255,0.15);
+            padding: 16px 20px;
+        }
+        .info-card .ic-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #668899;
+            margin-bottom: 6px;
+        }
+        .info-card .ic-val {
+            font-size: 22px;
+            font-weight: 700;
+            color: #00ffff;
+        }
+        .info-card .ic-val.green { color: #00ff88; }
+        .info-card .ic-val.gold { color: #ffcc44; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-corp">Infinite Solutions</div>
+        <div class="header-title">Build Service</div>
+        <div class="header-sub">Manufacturing On Demand</div>
+        <div class="mockup-banner">⚠ MOCKUP — NOT YET LIVE</div>
+    </div>
+
+    <!-- SSO Bar — "logged in" state -->
+    <div class="sso-bar">
+        <span class="char-corp">Infinite Solutions</span>
+        <span class="char-name">▸ Hamektok Hakaari</span>
+        <button class="btn-sso">Logout</button>
+    </div>
+    <!-- SSO Bar — logged-out state (hidden in mockup)
+    <div class="sso-bar" style="justify-content:center">
+        <button class="btn-sso" style="padding:10px 32px;font-size:14px">
+            ⬡ Login with EVE Online
+        </button>
+        <span style="font-size:13px;color:#668899">Alliance membership verified automatically</span>
+    </div>
+    -->
+
+    <!-- Main tabs -->
+    <div class="main-tabs">
+        <button class="main-tab active" onclick="showTab('customer')">Request a Build</button>
+        <button class="main-tab" onclick="showTab('status')">Check Request Status</button>
+        <button class="main-tab" onclick="showTab('builder')">Builder Job Board</button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         TAB 1 — CUSTOMER REQUEST FORM
+         ════════════════════════════════════════════ -->
+    <div id="tab-customer" class="tab-content active">
+
+        <div class="section">
+            <div class="section-title">Submit a Build Request</div>
+            <div class="section-sub">
+                Request ships, modules, or full doctrine fits. Quotes are sent via Discord DM.
+                Alliance SSO verified — your character has been confirmed.
+            </div>
+
+            <!-- Request type toggle -->
+            <div class="toggle-row">
+                <button class="toggle-btn active" onclick="setMode('item', this)">Single Item / Custom Order</button>
+                <button class="toggle-btn" onclick="setMode('fit', this)">Doctrine Fit (pre-defined)</button>
+            </div>
+
+            <!-- Mode: Single item -->
+            <div id="mode-item">
+                <div class="form-grid">
+                    <div class="field full">
+                        <label>Item to Build</label>
+                        <div class="item-search-wrap">
+                            <input type="text" id="itemSearch" placeholder="Search ships, modules, ammo…"
+                                   oninput="filterItems(this.value)" onfocus="showDropdown()" onblur="hideDropdown()">
+                            <div class="item-dropdown" id="itemDropdown" style="display:none">
+                                <div onclick="selectItem('Apocalypse', 'T1 Battleship')">Apocalypse <span class="item-category">T1 Battleship</span></div>
+                                <div onclick="selectItem('Raven', 'T1 Battleship')">Raven <span class="item-category">T1 Battleship</span></div>
+                                <div onclick="selectItem('Nidhoggur', 'Carrier')">Nidhoggur <span class="item-category">Carrier</span></div>
+                                <div onclick="selectItem('Naglfar', 'Dreadnought')">Naglfar <span class="item-category">Dreadnought</span></div>
+                                <div onclick="selectItem('Hound', 'T2 Stealth Bomber')">Hound <span class="item-category">T2 Stealth Bomber</span></div>
+                                <div onclick="selectItem('Muninn', 'T2 Heavy Assault Cruiser')">Muninn <span class="item-category">T2 Heavy Assault Cruiser</span></div>
+                                <div onclick="selectItem('Cerberus', 'T2 Heavy Assault Cruiser')">Cerberus <span class="item-category">T2 Heavy Assault Cruiser</span></div>
+                                <div onclick="selectItem('1400mm Howitzer Artillery II', 'T2 Module')">1400mm Howitzer Artillery II <span class="item-category">T2 Module</span></div>
+                                <div onclick="selectItem('Carbonized Lead XL', 'Ammo')">Carbonized Lead XL <span class="item-category">Ammo</span></div>
+                                <div onclick="selectItem('Large Shield Extender II', 'T2 Module')">Large Shield Extender II <span class="item-category">T2 Module</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Quantity</label>
+                        <input type="number" value="1" min="1" placeholder="How many?">
+                    </div>
+
+                    <div class="field">
+                        <label>Priority</label>
+                        <select>
+                            <option>Normal (7–14 days)</option>
+                            <option>Urgent (3–5 days, +15% fee)</option>
+                            <option>Flexible (whenever, best price)</option>
+                        </select>
+                    </div>
+
+                    <div class="field full">
+                        <label>Pickup / Delivery Location</label>
+                        <input type="text" id="deliveryLoc1" value="LX-ZOJ — Infinite Solutions Sotiyo (default)">
+                    </div>
+                    <div class="field full" style="flex-direction:row;align-items:center;gap:12px">
+                        <input type="checkbox" id="needsDelivery1" onchange="toggleDelivery('1')" style="width:auto;accent-color:#00d9ff">
+                        <label for="needsDelivery1" style="font-size:14px;color:#aabbcc;letter-spacing:0;text-transform:none;cursor:pointer">
+                            I need delivery to a different system
+                            <span style="color:#ffcc44;font-size:13px;margin-left:6px">(hauling surcharge applies — TBD)</span>
+                        </label>
+                    </div>
+                    <div class="field full" id="deliveryExtra1" style="display:none">
+                        <label>Delivery Destination</label>
+                        <input type="text" placeholder="e.g. 4-EP12 — Alliance Keepstar">
+                    </div>
+
+                    <div class="field">
+                        <label>Requested By (Character Name)</label>
+                        <input type="text" value="Hamektok Hakaari" readonly style="color:#00ff88">
+                    </div>
+
+                    <div class="field">
+                        <label>Preferred Deadline</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="field full">
+                        <label>Notes / Special Requirements</label>
+                        <textarea placeholder="Any specific ME/TE requirements, alternate delivery options, bulk discount requests, etc."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode: Doctrine fit -->
+            <div id="mode-fit" style="display:none">
+                <div style="margin-bottom:14px;font-size:14px;color:#aabbcc">
+                    Select a doctrine fit to order the complete ship + fittings as a package.
+                    Individual items can be adjusted after selection.
+                </div>
+                <div class="fit-grid">
+                    <div class="fit-card selected" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Nightmare — WC-EN — DPS v1.3</div>
+                            <div class="fit-class">T1 Battleship · Sansha</div>
+                        </div>
+                        <div class="fit-items-count" style="color:#00ff88">✓ Selected</div>
+                    </div>
+                    <div class="fit-card" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Muninn — HAC Fleet</div>
+                            <div class="fit-class">T2 Heavy Assault Cruiser</div>
+                        </div>
+                        <div class="fit-items-count">28 items</div>
+                    </div>
+                    <div class="fit-card" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Cerberus — Missile Fleet</div>
+                            <div class="fit-class">T2 Heavy Assault Cruiser</div>
+                        </div>
+                        <div class="fit-items-count">31 items</div>
+                    </div>
+                    <div class="fit-card" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Naglfar — Siege</div>
+                            <div class="fit-class">Dreadnought</div>
+                        </div>
+                        <div class="fit-items-count">22 items</div>
+                    </div>
+                    <div class="fit-card" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Nidhoggur — Combat Carrier</div>
+                            <div class="fit-class">Carrier</div>
+                        </div>
+                        <div class="fit-items-count">19 items</div>
+                    </div>
+                    <div class="fit-card" onclick="selectFit(this)">
+                        <div>
+                            <div class="fit-name">Hound — Covert Ops</div>
+                            <div class="fit-class">T2 Stealth Bomber</div>
+                        </div>
+                        <div class="fit-items-count">24 items</div>
+                    </div>
+                </div>
+
+                <div style="font-size:14px;color:#668899;margin-bottom:12px">
+                    Selected fit: <span style="color:#00d9ff;font-family:'Orbitron',sans-serif">Nightmare — WC-EN — DPS v1.3</span>
+                    &nbsp;·&nbsp; 33 items &nbsp;·&nbsp; Est. materials: <span style="color:#ffcc44">~1.4B ISK</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label>Quantity (full fits)</label>
+                        <input type="number" value="1" min="1">
+                    </div>
+                    <div class="field">
+                        <label>Priority</label>
+                        <select>
+                            <option>Normal (7–14 days)</option>
+                            <option>Urgent (3–5 days, +15% fee)</option>
+                            <option>Flexible (whenever, best price)</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label>Pickup / Delivery Location</label>
+                        <input type="text" value="LX-ZOJ — Infinite Solutions Sotiyo (default)">
+                    </div>
+                    <div class="field full" style="flex-direction:row;align-items:center;gap:12px">
+                        <input type="checkbox" id="needsDelivery2" onchange="toggleDelivery('2')" style="width:auto;accent-color:#00d9ff">
+                        <label for="needsDelivery2" style="font-size:14px;color:#aabbcc;letter-spacing:0;text-transform:none;cursor:pointer">
+                            I need delivery to a different system
+                            <span style="color:#ffcc44;font-size:13px;margin-left:6px">(hauling surcharge applies — TBD)</span>
+                        </label>
+                    </div>
+                    <div class="field full" id="deliveryExtra2" style="display:none">
+                        <label>Delivery Destination</label>
+                        <input type="text" placeholder="e.g. 4-EP12 — Alliance Keepstar">
+                    </div>
+                    <div class="field full">
+                        <label>Notes</label>
+                        <textarea placeholder="e.g. leave out the damage mods, I'll fit those myself"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary">Submit Request</button>
+                <button class="btn btn-secondary">Clear Form</button>
+                <span style="font-size:13px;color:#668899;margin-left:8px">
+                    You'll receive a quote via Discord DM within 24h
+                </span>
+            </div>
+
+            <div class="disclaimer">
+                <strong>How it works:</strong> After submitting, Hamektok will review your request,
+                generate a quote (materials + build fee), and send it to you via Discord DM.
+                Once you accept, a builder will be assigned and you'll receive an EVE contract
+                when the build is complete. Payment is made through the contract.
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         TAB 2 — STATUS LOOKUP
+         ════════════════════════════════════════════ -->
+    <div id="tab-status" class="tab-content">
+        <div class="section">
+            <div class="section-title">Request Status Lookup</div>
+            <div class="section-sub">Enter your request ID to see current status and details.</div>
+
+            <div class="status-lookup">
+                <div class="field">
+                    <label>Request ID</label>
+                    <input type="text" value="REQ-0042" style="width:260px">
+                </div>
+                <button class="btn btn-primary btn-sm" style="height:42px;margin-bottom:0">Look Up</button>
+            </div>
+
+            <!-- Sample result -->
+            <div class="request-detail">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+                    <div>
+                        <span style="font-family:'Orbitron',sans-serif;font-size:13px;color:#668899">REQ-0042</span>
+                        &nbsp;&nbsp;
+                        <span style="font-family:'Orbitron',sans-serif;font-size:18px;color:#cce6ff">Naglfar</span>
+                        <span style="font-size:14px;color:#668899;margin-left:8px">Dreadnought · ×1</span>
+                    </div>
+                    <span class="badge badge-building">In Progress</span>
+                </div>
+
+                <!-- Status tracker -->
+                <div class="status-track">
+                    <div class="status-step done">
+                        <div class="step-dot done">✓</div>
+                        <div class="step-label done">Submitted</div>
+                    </div>
+                    <div class="status-step done">
+                        <div class="step-dot done">✓</div>
+                        <div class="step-label done">Quoted</div>
+                    </div>
+                    <div class="status-step done">
+                        <div class="step-dot done">✓</div>
+                        <div class="step-label done">Accepted</div>
+                    </div>
+                    <div class="status-step done">
+                        <div class="step-dot done">✓</div>
+                        <div class="step-label done">Assigned</div>
+                    </div>
+                    <div class="status-step active">
+                        <div class="step-dot active">◉</div>
+                        <div class="step-label active">Building</div>
+                    </div>
+                    <div class="status-step">
+                        <div class="step-dot">○</div>
+                        <div class="step-label">Delivered</div>
+                    </div>
+                    <div class="status-step">
+                        <div class="step-dot">○</div>
+                        <div class="step-label">Complete</div>
+                    </div>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <label>Quote Price</label>
+                        <div class="val isk">3,420,000,000 ISK</div>
+                    </div>
+                    <div class="detail-item">
+                        <label>Delivery Location</label>
+                        <div class="val">LX-ZOJ Citadel</div>
+                    </div>
+                    <div class="detail-item">
+                        <label>Target Deadline</label>
+                        <div class="val">2026-03-18</div>
+                    </div>
+                    <div class="detail-item">
+                        <label>Submitted</label>
+                        <div class="val">2026-03-06</div>
+                    </div>
+                </div>
+
+                <div style="font-size:14px;color:#668899">
+                    Builder assigned. Components are in production.
+                    You will receive an EVE contract when the build is ready for delivery.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         TAB 3 — BUILDER JOB BOARD
+         ════════════════════════════════════════════ -->
+    <div id="tab-builder" class="tab-content">
+
+        <!-- Builder stats -->
+        <div class="info-row" style="margin-top:20px">
+            <div class="info-card">
+                <div class="ic-label">Active Jobs</div>
+                <div class="ic-val">2</div>
+            </div>
+            <div class="info-card">
+                <div class="ic-label">Completed (All Time)</div>
+                <div class="ic-val green">17</div>
+            </div>
+            <div class="info-card">
+                <div class="ic-label">Earnings Unpaid</div>
+                <div class="ic-val gold">284,500,000 ISK</div>
+            </div>
+            <div class="info-card">
+                <div class="ic-label">Total Earned (All Time)</div>
+                <div class="ic-val gold">2,140,000,000 ISK</div>
+            </div>
+        </div>
+
+        <!-- Available jobs -->
+        <div class="section">
+            <div class="section-title">Available Jobs — Claim a Build</div>
+            <div class="section-sub">
+                Simple builds can be self-assigned. Complex builds (capitals, multi-component)
+                are dispatched by Hamektok and may be split into sub-tasks.
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Type</th>
+                        <th>Delivery</th>
+                        <th>Deadline</th>
+                        <th>Est. Value</th>
+                        <th>Your Cut (~15%)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="muted">REQ-0047</td>
+                        <td>Muninn</td>
+                        <td>3</td>
+                        <td><span class="badge badge-simple">Simple</span></td>
+                        <td>LX-ZOJ</td>
+                        <td>2026-03-20</td>
+                        <td class="isk">1,050,000,000</td>
+                        <td class="green">~157,500,000</td>
+                        <td><button class="btn btn-success btn-sm">Claim</button></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0048</td>
+                        <td>Hound × 10 + ammo package</td>
+                        <td>10</td>
+                        <td><span class="badge badge-simple">Simple</span></td>
+                        <td>LX-ZOJ</td>
+                        <td>2026-03-25</td>
+                        <td class="isk">620,000,000</td>
+                        <td class="green">~93,000,000</td>
+                        <td><button class="btn btn-success btn-sm">Claim</button></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0044</td>
+                        <td>Nidhoggur</td>
+                        <td>1</td>
+                        <td><span class="badge badge-complex">Complex</span></td>
+                        <td>LX-ZOJ</td>
+                        <td>2026-03-30</td>
+                        <td class="isk">14,200,000,000</td>
+                        <td class="green">~2,130,000,000*</td>
+                        <td><button class="btn btn-warn btn-sm">View Sub-tasks</button></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0049</td>
+                        <td>Large Shield Extender II ×50</td>
+                        <td>50</td>
+                        <td><span class="badge badge-simple">Simple</span></td>
+                        <td>LX-ZOJ</td>
+                        <td>2026-04-01</td>
+                        <td class="isk">180,000,000</td>
+                        <td class="green">~27,000,000</td>
+                        <td><button class="btn btn-success btn-sm">Claim</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Complex build sub-task breakdown (expanded) -->
+            <div style="margin-top:20px">
+                <div style="font-family:'Orbitron',sans-serif;font-size:12px;color:#ff9922;letter-spacing:1px;margin-bottom:10px">
+                    ▸ REQ-0044 — Nidhoggur Sub-tasks (assigned by Hamektok)
+                </div>
+                <div class="subtasks">
+                    <div class="subtask-row">
+                        <span>Capital Armor Plates × 5</span>
+                        <span style="color:#668899">Component Builder</span>
+                        <span class="badge badge-pending">Open</span>
+                        <button class="btn btn-success btn-sm">Claim</button>
+                    </div>
+                    <div class="subtask-row">
+                        <span>Capital Shield Emitters × 5</span>
+                        <span style="color:#668899">Component Builder</span>
+                        <span class="badge badge-pending">Open</span>
+                        <button class="btn btn-success btn-sm">Claim</button>
+                    </div>
+                    <div class="subtask-row">
+                        <span>Capital Jump Drive × 1</span>
+                        <span style="color:#668899">Component Builder</span>
+                        <span class="badge badge-assigned" style="">Claimed — Aldent Rendrag</span>
+                        <button class="btn btn-secondary btn-sm" disabled>Claimed</button>
+                    </div>
+                    <div class="subtask-row">
+                        <span>Nidhoggur Hull (Final Assembly)</span>
+                        <span style="color:#668899">Hull Builder — awaiting components</span>
+                        <span class="badge badge-pending">Open</span>
+                        <button class="btn btn-success btn-sm">Claim</button>
+                    </div>
+                </div>
+                <div style="font-size:12px;color:#668899;margin-top:8px">
+                    * Total builder payout split proportionally across sub-task builders based on material contribution.
+                </div>
+            </div>
+        </div>
+
+        <!-- My active jobs -->
+        <div class="section">
+            <div class="section-title">My Active Jobs</div>
+            <div class="section-sub">Jobs you have claimed. Mark delivered once the EVE contract is up.</div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Customer</th>
+                        <th>Deadline</th>
+                        <th>Your Cut</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="muted">REQ-0042</td>
+                        <td>Naglfar</td>
+                        <td>1</td>
+                        <td>Vexillum Praetorian</td>
+                        <td>2026-03-18</td>
+                        <td class="green">513,000,000</td>
+                        <td><span class="badge badge-building">Building</span></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="showDeliverModal()">Mark Delivered</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0038</td>
+                        <td>Cerberus ×5</td>
+                        <td>5</td>
+                        <td>Darkwind Kael</td>
+                        <td>2026-03-14</td>
+                        <td class="green">187,500,000</td>
+                        <td><span class="badge badge-delivered">Delivered</span></td>
+                        <td><span style="font-size:13px;color:#668899">Awaiting confirmation</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payout history -->
+        <div class="section">
+            <div class="section-title">Payout History</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Job</th>
+                        <th>Item</th>
+                        <th>Contract Price</th>
+                        <th>Your Cut</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="muted">2026-02-28</td>
+                        <td class="muted">REQ-0031</td>
+                        <td>Muninn ×5</td>
+                        <td class="isk">1,050,000,000</td>
+                        <td class="green">157,500,000</td>
+                        <td><span class="badge badge-complete">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">2026-02-18</td>
+                        <td class="muted">REQ-0027</td>
+                        <td>Hound ×8</td>
+                        <td class="isk">496,000,000</td>
+                        <td class="green">74,400,000</td>
+                        <td><span class="badge badge-complete">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">2026-02-05</td>
+                        <td class="muted">REQ-0022</td>
+                        <td>Cerberus ×3</td>
+                        <td class="isk">375,000,000</td>
+                        <td class="green">56,250,000</td>
+                        <td><span class="badge badge-complete">Paid</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- /builder tab -->
+
+    <!-- Deliver modal (hidden) -->
+    <div id="deliverModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;display:none;align-items:center;justify-content:center">
+        <div style="background:#001830;border:1px solid #00d9ff;padding:32px;max-width:480px;width:90%">
+            <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:#00d9ff;margin-bottom:18px">Mark Job Delivered — REQ-0042</div>
+            <div class="field" style="margin-bottom:16px">
+                <label>EVE Contract ID</label>
+                <input type="text" placeholder="Paste the contract ID from EVE">
+            </div>
+            <div class="field" style="margin-bottom:22px">
+                <label>Notes</label>
+                <textarea placeholder="Any notes for Hamektok"></textarea>
+            </div>
+            <div style="display:flex;gap:12px">
+                <button class="btn btn-primary btn-sm">Confirm Delivery</button>
+                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('deliverModal').style.display='none'">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<script>
+    function showTab(name) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function setMode(mode, btn) {
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('mode-item').style.display = mode === 'item' ? '' : 'none';
+        document.getElementById('mode-fit').style.display  = mode === 'fit'  ? '' : 'none';
+    }
+
+    let dropdownTimer;
+    function showDropdown() {
+        clearTimeout(dropdownTimer);
+        document.getElementById('itemDropdown').style.display = 'block';
+    }
+    function hideDropdown() {
+        dropdownTimer = setTimeout(() => {
+            document.getElementById('itemDropdown').style.display = 'none';
+        }, 200);
+    }
+    function filterItems(val) {
+        const dd = document.getElementById('itemDropdown');
+        dd.style.display = 'block';
+        dd.querySelectorAll('div').forEach(d => {
+            d.style.display = val === '' || d.textContent.toLowerCase().includes(val.toLowerCase()) ? '' : 'none';
+        });
+    }
+    function selectItem(name, cat) {
+        document.getElementById('itemSearch').value = name;
+        document.getElementById('itemDropdown').style.display = 'none';
+    }
+
+    function selectFit(card) {
+        document.querySelectorAll('.fit-card').forEach(c => {
+            c.classList.remove('selected');
+            c.querySelector('.fit-items-count').style.color = '';
+            c.querySelector('.fit-items-count').textContent = c.querySelector('.fit-items-count').textContent.replace('✓ Selected', '24 items');
+        });
+        card.classList.add('selected');
+        card.querySelector('.fit-items-count').textContent = '✓ Selected';
+        card.querySelector('.fit-items-count').style.color = '#00ff88';
+    }
+
+    function toggleDelivery(n) {
+        const cb = document.getElementById('needsDelivery' + n);
+        const ex = document.getElementById('deliveryExtra' + n);
+        if (ex) ex.style.display = cb.checked ? '' : 'none';
+    }
+
+    function showDeliverModal() {
+        const m = document.getElementById('deliverModal');
+        m.style.display = 'flex';
+    }
+</script>
+</body>
+</html>

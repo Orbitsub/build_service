@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Solutions — Build Service Admin [MOCKUP]</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            background: #060d15;
+            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            color: #cce6ff;
+            display: flex; flex-direction: column;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #001020 0%, #001830 100%);
+            border-bottom: 2px solid rgba(0,217,255,0.25);
+            padding: 16px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: baseline; gap: 14px; }
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px; font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5);
+            letter-spacing: 2px;
+        }
+        .header-service {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px; color: #00d9ff; letter-spacing: 3px;
+        }
+        .header-right { display: flex; align-items: center; gap: 14px; }
+        .admin-badge {
+            font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 2px;
+            background: rgba(255,204,68,0.12); border: 1px solid rgba(255,204,68,0.4);
+            color: #ffcc44; padding: 4px 12px;
+        }
+        .char-name { font-family: 'Orbitron', sans-serif; font-size: 13px; color: #00ff88; }
+        .mockup-tag {
+            font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px;
+            background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.35);
+            color: #ff6666; padding: 3px 10px;
+        }
+
+        /* ── Layout ── */
+        .body-wrap { display: flex; flex: 1; min-height: 0; }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 200px; flex-shrink: 0;
+            background: rgba(0,10,25,0.9);
+            border-right: 1px solid rgba(0,217,255,0.12);
+            display: flex; flex-direction: column;
+        }
+        .sidebar-section {
+            font-family: 'Orbitron', sans-serif; font-size: 9px;
+            letter-spacing: 2px; color: #446688;
+            padding: 16px 16px 6px;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 16px;
+            color: #668899; font-size: 15px;
+            cursor: pointer; border: none; background: none;
+            width: 100%; text-align: left;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+        }
+        .nav-item:hover { color: #cce6ff; background: rgba(0,217,255,0.05); }
+        .nav-item.active {
+            color: #00d9ff; background: rgba(0,217,255,0.1);
+            border-left-color: #00d9ff;
+        }
+        .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+        .nav-badge {
+            margin-left: auto;
+            font-family: 'Orbitron', sans-serif; font-size: 9px;
+            background: rgba(255,204,68,0.15); border: 1px solid rgba(255,204,68,0.4);
+            color: #ffcc44; padding: 2px 7px;
+        }
+        .nav-badge.green {
+            background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.4);
+            color: #00ff88;
+        }
+
+        /* ── Main panel ── */
+        .main { flex: 1; padding: 24px 28px; overflow-y: auto; }
+
+        /* ── Stats strip ── */
+        .stats-strip {
+            display: grid; grid-template-columns: repeat(6, 1fr);
+            gap: 12px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: rgba(0,20,40,0.7);
+            border: 1px solid rgba(0,217,255,0.15);
+            padding: 14px 16px;
+        }
+        .stat-label {
+            font-family: 'Orbitron', sans-serif; font-size: 9px;
+            letter-spacing: 1px; color: #446688; margin-bottom: 6px;
+        }
+        .stat-val { font-size: 24px; font-weight: 700; color: #00ffff; }
+        .stat-val.gold { color: #ffcc44; }
+        .stat-val.green { color: #00ff88; }
+        .stat-val.orange { color: #ff9922; }
+        .stat-sub { font-size: 12px; color: #446688; margin-top: 2px; }
+
+        /* ── Panel header ── */
+        .panel-hdr {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .panel-title {
+            font-family: 'Orbitron', sans-serif; font-size: 14px;
+            color: #00d9ff; letter-spacing: 2px;
+        }
+        .panel-actions { display: flex; gap: 8px; align-items: center; }
+
+        /* ── Filter pills ── */
+        .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+        .pill {
+            font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 1px;
+            padding: 5px 14px; cursor: pointer;
+            background: transparent; border: 1px solid rgba(0,217,255,0.2);
+            color: #668899; transition: all 0.15s;
+        }
+        .pill:hover { border-color: rgba(0,217,255,0.4); color: #aabbcc; }
+        .pill.active { background: rgba(0,217,255,0.12); border-color: #00d9ff; color: #00d9ff; }
+
+        /* ── Table ── */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .data-table thead th {
+            font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px;
+            color: #446688; text-align: left; padding: 8px 12px;
+            border-bottom: 1px solid rgba(0,217,255,0.15);
+            background: rgba(0,217,255,0.03); white-space: nowrap;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid rgba(0,217,255,0.07);
+            cursor: pointer; transition: background 0.12s;
+        }
+        .data-table tbody tr:hover { background: rgba(0,217,255,0.05); }
+        .data-table tbody tr.selected { background: rgba(0,217,255,0.1); }
+        .data-table tbody tr.expanded { background: rgba(0,217,255,0.08); }
+        .data-table td { padding: 10px 12px; vertical-align: middle; }
+        .data-table td.isk { color: #ffcc44; }
+        .data-table td.green { color: #00ff88; }
+        .data-table td.muted { color: #446688; font-size: 13px; }
+        .data-table td.name { color: #cce6ff; font-weight: 600; }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-block; font-family: 'Orbitron', sans-serif;
+            font-size: 8px; letter-spacing: 1px; padding: 3px 9px; text-transform: uppercase;
+        }
+        .b-pending  { background: rgba(255,204,68,0.12); border: 1px solid rgba(255,204,68,0.4); color: #ffcc44; }
+        .b-quoted   { background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.3); color: #00d9ff; }
+        .b-assigned { background: rgba(160,100,255,0.1); border: 1px solid rgba(160,100,255,0.35); color: #bb88ff; }
+        .b-building { background: rgba(255,140,0,0.1); border: 1px solid rgba(255,140,0,0.35); color: #ff9922; }
+        .b-delivered{ background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.35); color: #00ff88; }
+        .b-complete { background: rgba(0,255,136,0.15); border: 1px solid rgba(0,255,136,0.55); color: #00ff88; }
+        .b-cancelled{ background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.3); color: #ff6666; }
+        .b-simple   { background: rgba(0,200,200,0.06); border: 1px solid rgba(0,200,200,0.2); color: #00aacc; }
+        .b-complex  { background: rgba(255,140,0,0.08); border: 1px solid rgba(255,140,0,0.3); color: #ff9922; }
+        .b-paid     { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.4); color: #00ff88; }
+        .b-unpaid   { background: rgba(255,204,68,0.1); border: 1px solid rgba(255,204,68,0.35); color: #ffcc44; }
+
+        /* ── Expanded request row ── */
+        .expand-row td { padding: 0; }
+        .expand-panel {
+            background: rgba(0,10,30,0.9);
+            border-top: 1px solid rgba(0,217,255,0.12);
+            border-bottom: 1px solid rgba(0,217,255,0.12);
+            padding: 20px 24px;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+        }
+        .ep-section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 10px;
+            letter-spacing: 2px; color: #446688; margin-bottom: 10px;
+        }
+        .ep-field { margin-bottom: 10px; }
+        .ep-label { font-size: 11px; color: #446688; margin-bottom: 2px; }
+        .ep-val { font-size: 15px; color: #cce6ff; }
+        .ep-val.isk { color: #ffcc44; }
+        .ep-val.green { color: #00ff88; }
+
+        /* ── Buttons ── */
+        .btn {
+            font-family: 'Orbitron', sans-serif; font-size: 11px;
+            letter-spacing: 1px; padding: 8px 18px;
+            cursor: pointer; border: none; transition: all 0.15s;
+        }
+        .btn-primary { background: rgba(0,217,255,0.15); border: 1px solid rgba(0,217,255,0.4); color: #00d9ff; }
+        .btn-primary:hover { background: rgba(0,217,255,0.25); }
+        .btn-success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.4); color: #00ff88; }
+        .btn-success:hover { background: rgba(0,255,136,0.2); }
+        .btn-warn { background: rgba(255,204,68,0.1); border: 1px solid rgba(255,204,68,0.4); color: #ffcc44; }
+        .btn-warn:hover { background: rgba(255,204,68,0.2); }
+        .btn-danger { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.35); color: #ff6666; }
+        .btn-danger:hover { background: rgba(255,80,80,0.16); }
+        .btn-ghost { background: transparent; border: 1px solid rgba(0,217,255,0.2); color: #668899; }
+        .btn-ghost:hover { border-color: rgba(0,217,255,0.4); color: #aabbcc; }
+        .btn-sm { font-size: 10px; padding: 5px 12px; }
+
+        /* ── Quote tool ── */
+        .quote-tool {
+            display: grid; grid-template-columns: 1fr 360px; gap: 20px;
+        }
+        .global-basis-bar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; margin-bottom: 12px;
+            background: rgba(0,10,25,0.7);
+            border: 1px solid rgba(0,217,255,0.12);
+        }
+        .global-basis-bar .gbb-label { color: #446688; font-size: 12px; margin-right: 4px; }
+        .basis-btn {
+            padding: 3px 10px; font-size: 10px; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px; border: 1px solid; cursor: pointer;
+            transition: all 0.15s; background: none;
+        }
+        .basis-btn.jbv { border-color: rgba(0,255,136,0.5); color: #00ff88; background: rgba(0,255,136,0.08); }
+        .basis-btn.jsv { border-color: rgba(0,217,255,0.5); color: #00d9ff; background: rgba(0,217,255,0.08); }
+        .basis-btn.inactive { border-color: rgba(100,120,140,0.3); color: #446688; background: none; }
+        .basis-btn.inactive:hover { border-color: rgba(100,120,140,0.6); color: #668899; }
+        .pct-input {
+            width: 52px; background: rgba(0,10,30,0.8); color: #cce6ff;
+            border: 1px solid rgba(0,217,255,0.2); padding: 2px 5px;
+            font-size: 12px; font-family: 'Rajdhani', sans-serif; text-align: right;
+        }
+        .pct-input:focus { outline: none; border-color: #00d9ff; }
+        .cat-badge {
+            font-size: 10px; padding: 1px 6px; font-family: 'Rajdhani', sans-serif;
+            border: 1px solid; white-space: nowrap;
+        }
+        .cat-mineral  { color: #ffcc44; border-color: rgba(255,204,68,0.25);  background: rgba(255,204,68,0.07); }
+        .cat-reaction { color: #00cc77; border-color: rgba(0,204,119,0.25);   background: rgba(0,204,119,0.07); }
+        .cat-planetary{ color: #88aaff; border-color: rgba(136,170,255,0.25); background: rgba(136,170,255,0.07); }
+        .cat-import   { color: #ff8866; border-color: rgba(255,136,102,0.3);  background: rgba(255,136,102,0.07); }
+        .materials-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+        .materials-table th {
+            font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px;
+            color: #446688; text-align: left; padding: 7px 10px;
+            border-bottom: 1px solid rgba(0,217,255,0.12);
+        }
+        .materials-table td { padding: 5px 10px; border-bottom: 1px solid rgba(0,217,255,0.05); vertical-align: middle; }
+        .materials-table td.isk { color: #ffcc44; text-align: right; }
+        .materials-table td.num { text-align: right; color: #aabbcc; }
+        .materials-table tr.jbv-row td.row-total { color: #00ff88; text-align: right; }
+        .materials-table tr.jsv-row td.row-total { color: #00d9ff; text-align: right; }
+        .materials-table tfoot td {
+            padding: 8px 10px; font-weight: 700;
+            border-top: 1px solid rgba(0,217,255,0.2);
+        }
+        .tfoot-jbv { color: #00ff88; text-align: right; }
+        .tfoot-jsv { color: #00d9ff; text-align: right; }
+        .tfoot-job { color: #bb88ff; text-align: right; }
+        .tfoot-grand { color: #ffcc44; font-size: 14px; text-align: right; }
+
+        .quote-summary {
+            background: rgba(0,10,30,0.8);
+            border: 1px solid rgba(0,217,255,0.2);
+            padding: 20px;
+        }
+        .qs-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid rgba(0,217,255,0.08);
+            font-size: 14px;
+        }
+        .qs-row:last-child { border-bottom: none; }
+        .qs-row .qs-label { color: #668899; }
+        .qs-row .qs-val { color: #cce6ff; }
+        .qs-row .qs-val.isk { color: #ffcc44; }
+        .qs-row.total .qs-label { color: #00d9ff; font-family: 'Orbitron',sans-serif; font-size: 11px; }
+        .qs-row.total .qs-val { color: #00ffff; font-size: 20px; font-weight: 700; }
+
+        .markup-row {
+            display: flex; align-items: center; gap: 10px; padding: 8px 0;
+            border-bottom: 1px solid rgba(0,217,255,0.08);
+        }
+        .markup-row label { color: #668899; font-size: 14px; }
+        .markup-row input {
+            background: rgba(0,20,40,0.8); border: 1px solid rgba(0,217,255,0.3);
+            color: #ffcc44; font-family: 'Rajdhani',sans-serif; font-size: 16px;
+            padding: 4px 8px; width: 70px; text-align: right; outline: none;
+        }
+        .markup-row .pct { color: #668899; font-size: 14px; }
+
+        /* ── Builder cards ── */
+        .builder-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+        .builder-card {
+            background: rgba(0,15,35,0.8); border: 1px solid rgba(0,217,255,0.15);
+            padding: 18px;
+        }
+        .builder-card.inactive { opacity: 0.45; }
+        .bc-name { font-family: 'Orbitron',sans-serif; font-size: 14px; color: #00d9ff; margin-bottom: 6px; }
+        .bc-specs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+        .spec-tag {
+            font-family: 'Orbitron',sans-serif; font-size: 9px; letter-spacing: 1px;
+            padding: 2px 8px; background: rgba(0,217,255,0.07);
+            border: 1px solid rgba(0,217,255,0.2); color: #668899;
+        }
+        .bc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .bc-stat { }
+        .bc-stat-label { font-size: 10px; color: #446688; }
+        .bc-stat-val { font-size: 16px; color: #cce6ff; }
+        .bc-stat-val.isk { color: #ffcc44; font-size: 14px; }
+        .bc-stat-val.green { color: #00ff88; }
+        .bc-actions { display: flex; gap: 8px; }
+
+        /* ── Subtask panel ── */
+        .subtask-section { margin-top: 20px; }
+        .subtask-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .subtask-table th {
+            font-family: 'Orbitron',sans-serif; font-size: 9px; letter-spacing: 1px;
+            color: #446688; text-align: left; padding: 7px 12px;
+            border-bottom: 1px solid rgba(160,100,255,0.2);
+            background: rgba(160,100,255,0.04);
+        }
+        .subtask-table td { padding: 9px 12px; border-bottom: 1px solid rgba(0,217,255,0.06); }
+
+        /* ── Payout panel ── */
+        .payout-summary { display: flex; gap: 14px; margin-bottom: 20px; }
+        .payout-card {
+            flex: 1; background: rgba(0,15,35,0.8);
+            border: 1px solid rgba(0,217,255,0.15); padding: 14px 18px;
+        }
+        .pc-label { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:1px; color:#446688; margin-bottom:5px; }
+        .pc-val { font-size:22px; font-weight:700; }
+
+        /* ── Form inputs ── */
+        input[type=text], input[type=number], select {
+            background: rgba(0,20,40,0.8); border: 1px solid rgba(0,217,255,0.3);
+            color: #cce6ff; font-family:'Rajdhani',sans-serif; font-size:15px;
+            padding: 7px 12px; outline: none; transition: border-color 0.2s;
+        }
+        input:focus, select:focus { border-color: #00d9ff; }
+        select option { background: #001830; }
+
+        /* ── Discord preview ── */
+        .discord-preview {
+            background: #36393f; border-left: 4px solid #00d9ff;
+            padding: 14px 16px; font-family: monospace; font-size: 13px;
+            color: #dcddde; line-height: 1.6; margin-top: 14px;
+        }
+        .discord-preview .dc-title { color: #00d9ff; font-weight: bold; font-size: 14px; margin-bottom: 6px; }
+        .discord-preview .dc-isk { color: #ffcc44; }
+
+        /* ── Misc ── */
+        hr { border: none; border-top: 1px solid rgba(0,217,255,0.1); margin: 20px 0; }
+        .section-card {
+            background: rgba(0,15,30,0.6); border: 1px solid rgba(0,217,255,0.12);
+            padding: 20px 22px; margin-bottom: 16px;
+        }
+        .hidden { display: none; }
+        .tag-t1   { color: #aabbcc; }
+        .tag-t2   { color: #bb88ff; }
+        .tag-cap  { color: #ff9922; }
+        .tag-mod  { color: #00aacc; }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <span class="header-title">INFINITE SOLUTIONS</span>
+        <span class="header-service">Build Service · Admin</span>
+    </div>
+    <div class="header-right">
+        <span class="mockup-tag">MOCKUP</span>
+        <span class="admin-badge">ADMIN</span>
+        <span class="char-name">Hamektok Hakaari</span>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-section">Requests</div>
+        <button class="nav-item active" onclick="showPanel('requests', this)">
+            <span class="icon">📋</span> All Requests
+            <span class="nav-badge">3</span>
+        </button>
+        <button class="nav-item" onclick="showPanel('quote', this)">
+            <span class="icon">💬</span> Quote Tool
+        </button>
+        <button class="nav-item" onclick="showPanel('subtasks', this)">
+            <span class="icon">🔧</span> Sub-tasks
+            <span class="nav-badge">2</span>
+        </button>
+
+        <div class="sidebar-section">Builders</div>
+        <button class="nav-item" onclick="showPanel('builders', this)">
+            <span class="icon">👷</span> Builder Roster
+        </button>
+
+        <div class="sidebar-section">Finance</div>
+        <button class="nav-item" onclick="showPanel('payouts', this)">
+            <span class="icon">💰</span> Payouts
+            <span class="nav-badge">4</span>
+        </button>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- ══════════════════════════════════
+             PANEL: ALL REQUESTS
+             ══════════════════════════════════ -->
+        <div id="panel-requests">
+
+            <!-- Stats -->
+            <div class="stats-strip">
+                <div class="stat-card">
+                    <div class="stat-label">Pending</div>
+                    <div class="stat-val orange">3</div>
+                    <div class="stat-sub">awaiting quote</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Quoted</div>
+                    <div class="stat-val">2</div>
+                    <div class="stat-sub">awaiting accept</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">In Progress</div>
+                    <div class="stat-val">4</div>
+                    <div class="stat-sub">active builds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Delivered</div>
+                    <div class="stat-val">1</div>
+                    <div class="stat-sub">pending confirm</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Revenue (Month)</div>
+                    <div class="stat-val gold" style="font-size:18px">18.4B</div>
+                    <div class="stat-sub">ISK</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Completed (Month)</div>
+                    <div class="stat-val green">12</div>
+                    <div class="stat-sub">jobs</div>
+                </div>
+            </div>
+
+            <!-- Filters + actions -->
+            <div class="panel-hdr">
+                <span class="panel-title">Request Queue</span>
+                <div class="panel-actions">
+                    <input type="text" placeholder="Search customer or item…" style="width:220px;font-size:13px">
+                </div>
+            </div>
+
+            <div class="filter-pills">
+                <button class="pill active" onclick="setPill(this)">All (10)</button>
+                <button class="pill" onclick="setPill(this)">Pending (3)</button>
+                <button class="pill" onclick="setPill(this)">Quoted (2)</button>
+                <button class="pill" onclick="setPill(this)">In Progress (4)</button>
+                <button class="pill" onclick="setPill(this)">Delivered (1)</button>
+                <button class="pill" onclick="setPill(this)">Complete</button>
+                <button class="pill" onclick="setPill(this)">Cancelled</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Type</th>
+                        <th>Priority</th>
+                        <th>Deadline</th>
+                        <th>Quote</th>
+                        <th>Builder</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Pending rows -->
+                    <tr onclick="toggleExpand('req0051', this)">
+                        <td class="muted">REQ-0051</td>
+                        <td class="name">Vorn Kaldar</td>
+                        <td>Naglfar</td>
+                        <td>1</td>
+                        <td><span class="badge b-complex">Complex</span></td>
+                        <td style="color:#ff9922">Urgent</td>
+                        <td class="muted">2026-03-12</td>
+                        <td class="muted">—</td>
+                        <td class="muted">—</td>
+                        <td><span class="badge b-pending">Pending</span></td>
+                        <td><button class="btn btn-warn btn-sm" onclick="event.stopPropagation();openQuote('REQ-0051','Naglfar',1,'Dreadnought')">Quote</button></td>
+                    </tr>
+                    <tr id="expand-req0051" class="expand-row hidden">
+                        <td colspan="11">
+                            <div class="expand-panel">
+                                <div>
+                                    <div class="ep-section-title">Request Details</div>
+                                    <div class="ep-field"><div class="ep-label">Customer</div><div class="ep-val">Vorn Kaldar</div></div>
+                                    <div class="ep-field"><div class="ep-label">Item</div><div class="ep-val">Naglfar ×1</div></div>
+                                    <div class="ep-field"><div class="ep-label">Delivery</div><div class="ep-val">LX-ZOJ Sotiyo (pickup)</div></div>
+                                    <div class="ep-field"><div class="ep-label">Deadline</div><div class="ep-val" style="color:#ff9922">2026-03-12 (Urgent)</div></div>
+                                    <div class="ep-field"><div class="ep-label">Submitted</div><div class="ep-val muted">2026-03-06 14:22</div></div>
+                                </div>
+                                <div>
+                                    <div class="ep-section-title">Customer Notes</div>
+                                    <div style="font-size:14px;color:#aabbcc;line-height:1.6">
+                                        "Need this for an upcoming op, flexibility on modules but hull ASAP."
+                                    </div>
+                                    <br>
+                                    <div class="ep-section-title">Blueprint Check</div>
+                                    <div style="font-size:14px;color:#00ff88">✓ Naglfar BP on file (ME 10 / TE 20)</div>
+                                </div>
+                                <div>
+                                    <div class="ep-section-title">Actions</div>
+                                    <div style="display:flex;flex-direction:column;gap:8px">
+                                        <button class="btn btn-warn" onclick="openQuote('REQ-0051','Naglfar',1,'Dreadnought')">Generate Quote</button>
+                                        <button class="btn btn-ghost">Add Internal Note</button>
+                                        <button class="btn btn-danger btn-sm">Cancel Request</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr onclick="toggleExpand('req0050', this)">
+                        <td class="muted">REQ-0050</td>
+                        <td class="name">Seyla Vorn</td>
+                        <td>Muninn ×3</td>
+                        <td>3</td>
+                        <td><span class="badge b-simple">Simple</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-22</td>
+                        <td class="muted">—</td>
+                        <td class="muted">—</td>
+                        <td><span class="badge b-pending">Pending</span></td>
+                        <td><button class="btn btn-warn btn-sm" onclick="event.stopPropagation();openQuote('REQ-0050','Muninn',3,'T2 HAC')">Quote</button></td>
+                    </tr>
+                    <tr id="expand-req0050" class="expand-row hidden"><td colspan="11"><div class="expand-panel">
+                        <div>
+                            <div class="ep-section-title">Request Details</div>
+                            <div class="ep-field"><div class="ep-label">Customer</div><div class="ep-val">Seyla Vorn</div></div>
+                            <div class="ep-field"><div class="ep-label">Item</div><div class="ep-val">Muninn ×3</div></div>
+                            <div class="ep-field"><div class="ep-label">Delivery</div><div class="ep-val">LX-ZOJ Sotiyo (pickup)</div></div>
+                            <div class="ep-field"><div class="ep-label">Deadline</div><div class="ep-val">2026-03-22 (Normal)</div></div>
+                        </div>
+                        <div>
+                            <div class="ep-section-title">Blueprint Check</div>
+                            <div style="font-size:14px;color:#00ff88">✓ Muninn BP on file (ME 10 / TE 20)</div>
+                        </div>
+                        <div>
+                            <div class="ep-section-title">Actions</div>
+                            <div style="display:flex;flex-direction:column;gap:8px">
+                                <button class="btn btn-warn" onclick="openQuote('REQ-0050','Muninn',3,'T2 HAC')">Generate Quote</button>
+                                <button class="btn btn-ghost">Add Internal Note</button>
+                                <button class="btn btn-danger btn-sm">Cancel Request</button>
+                            </div>
+                        </div>
+                    </div></td></tr>
+
+                    <tr>
+                        <td class="muted">REQ-0049</td>
+                        <td class="name">Darkwind Kael</td>
+                        <td>Lg Shield Ext II ×50</td>
+                        <td>50</td>
+                        <td><span class="badge b-simple">Simple</span></td>
+                        <td style="color:#668899">Flexible</td>
+                        <td class="muted">2026-04-01</td>
+                        <td class="muted">—</td>
+                        <td class="muted">—</td>
+                        <td><span class="badge b-pending">Pending</span></td>
+                        <td><button class="btn btn-warn btn-sm" onclick="openQuote('REQ-0049','Large Shield Extender II',50,'T2 Module')">Quote</button></td>
+                    </tr>
+
+                    <!-- Quoted -->
+                    <tr>
+                        <td class="muted">REQ-0048</td>
+                        <td class="name">Kira Aldast</td>
+                        <td>Hound ×10</td>
+                        <td>10</td>
+                        <td><span class="badge b-simple">Simple</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-25</td>
+                        <td class="isk">620,000,000</td>
+                        <td class="muted">—</td>
+                        <td><span class="badge b-quoted">Quoted</span></td>
+                        <td>
+                            <button class="btn btn-success btn-sm" onclick="assignDialog()">Assign</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0047</td>
+                        <td class="name">Mael Thorn</td>
+                        <td>Cerberus ×2</td>
+                        <td>2</td>
+                        <td><span class="badge b-simple">Simple</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-28</td>
+                        <td class="isk">490,000,000</td>
+                        <td class="muted">—</td>
+                        <td><span class="badge b-quoted">Quoted</span></td>
+                        <td><button class="btn btn-success btn-sm" onclick="assignDialog()">Assign</button></td>
+                    </tr>
+
+                    <!-- In progress -->
+                    <tr>
+                        <td class="muted">REQ-0044</td>
+                        <td class="name">Tyron Vesper</td>
+                        <td>Nidhoggur</td>
+                        <td>1</td>
+                        <td><span class="badge b-complex">Complex</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-30</td>
+                        <td class="isk">14,200,000,000</td>
+                        <td>Multiple</td>
+                        <td><span class="badge b-building">Building</span></td>
+                        <td><button class="btn btn-primary btn-sm" onclick="showPanel('subtasks', null)">Sub-tasks</button></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0042</td>
+                        <td class="name">Vexillum Praetorian</td>
+                        <td>Naglfar</td>
+                        <td>1</td>
+                        <td><span class="badge b-complex">Complex</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-18</td>
+                        <td class="isk">3,420,000,000</td>
+                        <td>Hamektok H.</td>
+                        <td><span class="badge b-building">Building</span></td>
+                        <td><button class="btn btn-success btn-sm">Mark Delivered</button></td>
+                    </tr>
+                    <tr>
+                        <td class="muted">REQ-0038</td>
+                        <td class="name">Darkwind Kael</td>
+                        <td>Cerberus ×5</td>
+                        <td>5</td>
+                        <td><span class="badge b-simple">Simple</span></td>
+                        <td style="color:#aabbcc">Normal</td>
+                        <td class="muted">2026-03-14</td>
+                        <td class="isk">1,250,000,000</td>
+                        <td>Aldent Rendrag</td>
+                        <td><span class="badge b-delivered">Delivered</span></td>
+                        <td><button class="btn btn-success btn-sm">Confirm Complete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ══════════════════════════════════
+             PANEL: QUOTE TOOL
+             ══════════════════════════════════ -->
+        <div id="panel-quote" class="hidden">
+            <div class="panel-hdr">
+                <span class="panel-title">Quote Tool</span>
+                <div class="panel-actions">
+                    <span id="quoteContext" style="font-size:14px;color:#668899">Select a pending request to generate a quote</span>
+                </div>
+            </div>
+
+            <div id="quoteEmpty" style="padding:40px;text-align:center;color:#446688;font-size:15px">
+                Click <span style="color:#ffcc44">Quote</span> on a pending request from the Request Queue to open it here.
+            </div>
+
+            <div id="quoteContent" class="hidden">
+                <div class="quote-tool">
+                    <!-- Left: materials breakdown -->
+                    <div>
+                        <div class="section-card">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                                <div class="ep-section-title" style="margin-bottom:0">
+                                    Materials — <span id="qtItemName" style="color:#cce6ff"></span> &times;<span id="qtQty"></span>
+                                    &nbsp;<span id="qtBuildParams" style="font-size:11px;color:#446688"></span>
+                                </div>
+                            </div>
+
+                            <!-- Global controls -->
+                            <div class="global-basis-bar">
+                                <span class="gbb-label">Set all:</span>
+                                <button class="basis-btn jbv" onclick="setAllBasis('JBV')">JBV</button>
+                                <button class="basis-btn jsv" onclick="setAllBasis('JSV')">JSV</button>
+                                <button class="btn btn-ghost btn-sm" onclick="resetDefaults()" style="font-size:10px">Reset Defaults</button>
+                                <span style="margin-left:auto;font-size:12px;color:#446688" id="basisSummary"></span>
+                            </div>
+
+                            <div style="overflow-x:auto">
+                            <table class="materials-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Category</th>
+                                        <th style="text-align:right">Qty</th>
+                                        <th style="text-align:center">Basis</th>
+                                        <th style="text-align:center">%</th>
+                                        <th style="text-align:right">Unit Price</th>
+                                        <th style="text-align:right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="materialsBody"></tbody>
+                                <tfoot id="materialsFoot"></tfoot>
+                            </table>
+                            </div>
+                            <div style="font-size:11px;color:#446688;margin-top:6px">
+                                Prices from latest Jita snapshot &middot; ME10 + structure rigs applied &middot; JBV = local buy order &middot; JSV = Jita sell (import cost)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: summary + quote builder -->
+                    <div class="quote-summary">
+                        <div class="ep-section-title" style="margin-bottom:14px">Quote Builder</div>
+
+                        <div class="qs-row">
+                            <span class="qs-label" style="color:#00ff88">JBV Materials</span>
+                            <span class="qs-val" style="color:#00ff88" id="qsJBV">—</span>
+                        </div>
+                        <div class="qs-row">
+                            <span class="qs-label" style="color:#00d9ff">JSV Materials</span>
+                            <span class="qs-val" style="color:#00d9ff" id="qsJSV">—</span>
+                        </div>
+                        <div class="qs-row">
+                            <span class="qs-label" style="color:#bb88ff">Job Costs</span>
+                            <span class="qs-val" style="color:#bb88ff" id="qsJob">—</span>
+                        </div>
+                        <div class="qs-row" style="border-top:1px solid rgba(0,217,255,0.15);margin-top:4px;padding-top:4px">
+                            <span class="qs-label">Subtotal</span>
+                            <span class="qs-val isk" id="qsSubtotal">—</span>
+                        </div>
+
+                        <div class="markup-row" style="margin-top:8px">
+                            <label>Markup</label>
+                            <input type="number" id="markupPct" value="15" min="0" max="100" oninput="recalcQuote()">
+                            <span class="pct">%</span>
+                        </div>
+
+                        <div class="qs-row">
+                            <span class="qs-label">Markup Amount</span>
+                            <span class="qs-val isk" id="qsMarkup">—</span>
+                        </div>
+                        <div class="qs-row total" style="margin-top:8px;padding-top:12px;border-top:1px solid rgba(0,217,255,0.2)">
+                            <span class="qs-label">Final Quote</span>
+                            <span class="qs-val isk" id="qsTotal">—</span>
+                        </div>
+                        <div class="qs-row">
+                            <span class="qs-label">Corp Margin</span>
+                            <span class="qs-val green" id="qsMargin">—</span>
+                        </div>
+                        <div class="qs-row">
+                            <span class="qs-label">Builder Cut (~70%)</span>
+                            <span class="qs-val" id="qsBuilder" style="color:#bb88ff">—</span>
+                        </div>
+                        <div class="qs-row" style="font-size:11px">
+                            <span class="qs-label">vs Jita Sell</span>
+                            <span class="qs-val" id="qsVsJita" style="color:#446688">—</span>
+                        </div>
+
+                        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+                            <button class="btn btn-primary" onclick="saveQuote()">Save Quote to Request</button>
+                            <button class="btn btn-warn" onclick="showDiscordPreview()">Preview Discord Message</button>
+                        </div>
+
+                        <div id="discordPreview" class="discord-preview hidden" style="margin-top:14px">
+                            <div class="dc-title">Build Quote — <span id="dcItem"></span></div>
+                            <div>Customer: <span id="dcCustomer" style="color:#cce6ff"></span></div>
+                            <div>Qty: <span id="dcQty" style="color:#cce6ff"></span></div>
+                            <div>Quote: <span class="dc-isk" id="dcTotal"></span> ISK</div>
+                            <div>Delivery: LX-ZOJ Sotiyo (pickup)</div>
+                            <div style="color:#aabbcc;margin-top:6px">Reply to accept. Quote valid 48h.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════
+             PANEL: SUB-TASKS
+             ══════════════════════════════════ -->
+        <div id="panel-subtasks" class="hidden">
+            <div class="panel-hdr">
+                <span class="panel-title">Complex Build Sub-tasks</span>
+                <button class="btn btn-primary btn-sm">+ Create Sub-task</button>
+            </div>
+
+            <!-- REQ-0044 Nidhoggur -->
+            <div class="section-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                    <div>
+                        <span style="font-family:'Orbitron',sans-serif;font-size:12px;color:#446688">REQ-0044</span>
+                        &nbsp;&nbsp;
+                        <span style="font-family:'Orbitron',sans-serif;font-size:16px;color:#cce6ff">Nidhoggur</span>
+                        <span style="font-size:13px;color:#668899;margin-left:8px">Carrier · ×1 · Tyron Vesper</span>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <span class="badge b-building">Building</span>
+                        <span style="font-size:13px;color:#ffcc44">14,200,000,000 ISK</span>
+                    </div>
+                </div>
+                <table class="subtask-table">
+                    <thead>
+                        <tr>
+                            <th>Sub-task</th>
+                            <th>Component</th>
+                            <th>Qty</th>
+                            <th>Assigned To</th>
+                            <th>Est. Mat Cost</th>
+                            <th>Builder Cut</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="muted">#1</td>
+                            <td>Capital Armor Plates</td>
+                            <td>5</td>
+                            <td>
+                                <select style="font-size:13px;padding:4px 8px">
+                                    <option>— Assign builder —</option>
+                                    <option>Aldent Rendrag</option>
+                                    <option>Hamektok Hakaari</option>
+                                    <option>Serak Volun</option>
+                                </select>
+                            </td>
+                            <td class="isk">480,000,000</td>
+                            <td style="color:#bb88ff">~72,000,000</td>
+                            <td><span class="badge b-pending">Open</span></td>
+                            <td><button class="btn btn-success btn-sm">Assign</button></td>
+                        </tr>
+                        <tr>
+                            <td class="muted">#2</td>
+                            <td>Capital Shield Emitters</td>
+                            <td>5</td>
+                            <td>
+                                <select style="font-size:13px;padding:4px 8px">
+                                    <option>— Assign builder —</option>
+                                    <option>Aldent Rendrag</option>
+                                    <option>Hamektok Hakaari</option>
+                                    <option>Serak Volun</option>
+                                </select>
+                            </td>
+                            <td class="isk">310,000,000</td>
+                            <td style="color:#bb88ff">~46,500,000</td>
+                            <td><span class="badge b-pending">Open</span></td>
+                            <td><button class="btn btn-success btn-sm">Assign</button></td>
+                        </tr>
+                        <tr>
+                            <td class="muted">#3</td>
+                            <td>Capital Jump Drive</td>
+                            <td>1</td>
+                            <td style="color:#00ff88">Aldent Rendrag</td>
+                            <td class="isk">920,000,000</td>
+                            <td style="color:#bb88ff">~138,000,000</td>
+                            <td><span class="badge b-building">Building</span></td>
+                            <td><button class="btn btn-ghost btn-sm">View</button></td>
+                        </tr>
+                        <tr>
+                            <td class="muted">#4</td>
+                            <td>Nidhoggur Hull (Final Assembly)</td>
+                            <td>1</td>
+                            <td>
+                                <select style="font-size:13px;padding:4px 8px">
+                                    <option>— Assign builder —</option>
+                                    <option>Aldent Rendrag</option>
+                                    <option selected>Hamektok Hakaari</option>
+                                    <option>Serak Volun</option>
+                                </select>
+                            </td>
+                            <td class="isk">11,200,000,000</td>
+                            <td style="color:#bb88ff">~1,680,000,000</td>
+                            <td><span class="badge b-pending">Open</span></td>
+                            <td><button class="btn btn-success btn-sm">Assign</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="font-size:12px;color:#446688;margin-top:10px">
+                    Builder cuts are estimates based on proportional material contribution. Final split calculated at completion.
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════
+             PANEL: BUILDER ROSTER
+             ══════════════════════════════════ -->
+        <div id="panel-builders" class="hidden">
+            <div class="panel-hdr">
+                <span class="panel-title">Builder Roster</span>
+                <button class="btn btn-primary btn-sm">+ Add Builder</button>
+            </div>
+
+            <div class="builder-grid">
+                <div class="builder-card">
+                    <div class="bc-name">Hamektok Hakaari</div>
+                    <div class="bc-specs">
+                        <span class="spec-tag tag-t1">T1 Ships</span>
+                        <span class="spec-tag tag-t2">T2 Ships</span>
+                        <span class="spec-tag tag-cap">Capitals</span>
+                        <span class="spec-tag tag-mod">Modules</span>
+                    </div>
+                    <div class="bc-stats">
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Active Jobs</div>
+                            <div class="bc-stat-val orange">2</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Completed</div>
+                            <div class="bc-stat-val green">47</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Builder Cut</div>
+                            <div class="bc-stat-val">15%</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Unpaid</div>
+                            <div class="bc-stat-val isk">284.5M</div>
+                        </div>
+                    </div>
+                    <div class="bc-actions">
+                        <button class="btn btn-ghost btn-sm">Edit</button>
+                        <button class="btn btn-ghost btn-sm">View Jobs</button>
+                    </div>
+                </div>
+
+                <div class="builder-card">
+                    <div class="bc-name">Aldent Rendrag</div>
+                    <div class="bc-specs">
+                        <span class="spec-tag tag-cap">Capitals</span>
+                        <span class="spec-tag tag-t2">T2 Ships</span>
+                    </div>
+                    <div class="bc-stats">
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Active Jobs</div>
+                            <div class="bc-stat-val orange">1</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Completed</div>
+                            <div class="bc-stat-val green">23</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Builder Cut</div>
+                            <div class="bc-stat-val">15%</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Unpaid</div>
+                            <div class="bc-stat-val isk">138.0M</div>
+                        </div>
+                    </div>
+                    <div class="bc-actions">
+                        <button class="btn btn-ghost btn-sm">Edit</button>
+                        <button class="btn btn-ghost btn-sm">View Jobs</button>
+                    </div>
+                </div>
+
+                <div class="builder-card">
+                    <div class="bc-name">Serak Volun</div>
+                    <div class="bc-specs">
+                        <span class="spec-tag tag-t1">T1 Ships</span>
+                        <span class="spec-tag tag-mod">Modules</span>
+                    </div>
+                    <div class="bc-stats">
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Active Jobs</div>
+                            <div class="bc-stat-val">0</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Completed</div>
+                            <div class="bc-stat-val green">11</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Builder Cut</div>
+                            <div class="bc-stat-val">12%</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Unpaid</div>
+                            <div class="bc-stat-val isk">0</div>
+                        </div>
+                    </div>
+                    <div class="bc-actions">
+                        <button class="btn btn-ghost btn-sm">Edit</button>
+                        <button class="btn btn-ghost btn-sm">View Jobs</button>
+                    </div>
+                </div>
+
+                <div class="builder-card inactive">
+                    <div class="bc-name" style="color:#446688">Torven Kade <span style="font-size:11px;color:#446688">(Inactive)</span></div>
+                    <div class="bc-specs">
+                        <span class="spec-tag">T1 Ships</span>
+                    </div>
+                    <div class="bc-stats">
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Active Jobs</div>
+                            <div class="bc-stat-val">0</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-label">Completed</div>
+                            <div class="bc-stat-val">4</div>
+                        </div>
+                    </div>
+                    <div class="bc-actions">
+                        <button class="btn btn-ghost btn-sm">Reactivate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════
+             PANEL: PAYOUTS
+             ══════════════════════════════════ -->
+        <div id="panel-payouts" class="hidden">
+            <div class="panel-hdr">
+                <span class="panel-title">Builder Payout Ledger</span>
+                <div class="panel-actions">
+                    <button class="btn btn-success btn-sm">Mark Selected Paid</button>
+                    <div class="filter-pills" style="margin:0">
+                        <button class="pill active" onclick="setPill(this)">Unpaid (4)</button>
+                        <button class="pill" onclick="setPill(this)">All</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payout-summary">
+                <div class="payout-card">
+                    <div class="pc-label">Total Owed (Unpaid)</div>
+                    <div class="pc-val" style="color:#ffcc44">422,500,000 ISK</div>
+                </div>
+                <div class="payout-card">
+                    <div class="pc-label">Paid This Month</div>
+                    <div class="pc-val" style="color:#00ff88">1,840,000,000 ISK</div>
+                </div>
+                <div class="payout-card">
+                    <div class="pc-label">Corp Revenue (Month)</div>
+                    <div class="pc-val" style="color:#00ffff">18,400,000,000 ISK</div>
+                </div>
+                <div class="payout-card">
+                    <div class="pc-label">Corp Margin (Month)</div>
+                    <div class="pc-val" style="color:#00ff88">2,760,000,000 ISK</div>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" style="width:auto"></th>
+                        <th>Builder</th>
+                        <th>Request ID</th>
+                        <th>Item</th>
+                        <th>Completed</th>
+                        <th>Contract Price</th>
+                        <th>Cut %</th>
+                        <th>Builder Owes</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" style="width:auto;accent-color:#00d9ff"></td>
+                        <td class="name">Hamektok Hakaari</td>
+                        <td class="muted">REQ-0038</td>
+                        <td>Cerberus ×5</td>
+                        <td class="muted">2026-03-06</td>
+                        <td class="isk">1,250,000,000</td>
+                        <td class="muted">15%</td>
+                        <td class="green">187,500,000</td>
+                        <td><span class="badge b-unpaid">Unpaid</span></td>
+                        <td><button class="btn btn-success btn-sm">Mark Paid</button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" style="width:auto;accent-color:#00d9ff"></td>
+                        <td class="name">Aldent Rendrag</td>
+                        <td class="muted">REQ-0033</td>
+                        <td>Capital Jump Drive ×1</td>
+                        <td class="muted">2026-03-04</td>
+                        <td class="isk">920,000,000</td>
+                        <td class="muted">15%</td>
+                        <td class="green">138,000,000</td>
+                        <td><span class="badge b-unpaid">Unpaid</span></td>
+                        <td><button class="btn btn-success btn-sm">Mark Paid</button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" style="width:auto;accent-color:#00d9ff"></td>
+                        <td class="name">Hamektok Hakaari</td>
+                        <td class="muted">REQ-0031</td>
+                        <td>Naglfar ×1</td>
+                        <td class="muted">2026-02-28</td>
+                        <td class="isk">3,420,000,000</td>
+                        <td class="muted">15%</td>
+                        <td class="green">513,000,000</td>
+                        <td><span class="badge b-unpaid">Unpaid</span></td>
+                        <td><button class="btn btn-success btn-sm">Mark Paid</button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" style="width:auto;accent-color:#00d9ff"></td>
+                        <td class="name">Serak Volun</td>
+                        <td class="muted">REQ-0029</td>
+                        <td>Muninn ×5</td>
+                        <td class="muted">2026-02-25</td>
+                        <td class="isk">1,750,000,000</td>
+                        <td class="muted">12%</td>
+                        <td class="green">210,000,000</td>
+                        <td><span class="badge b-unpaid">Unpaid</span></td>
+                        <td><button class="btn btn-success btn-sm">Mark Paid</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="name">Aldent Rendrag</td>
+                        <td class="muted">REQ-0027</td>
+                        <td>Hound ×8</td>
+                        <td class="muted">2026-02-18</td>
+                        <td class="isk">496,000,000</td>
+                        <td class="muted">15%</td>
+                        <td class="muted">74,400,000</td>
+                        <td><span class="badge b-paid">Paid</span></td>
+                        <td class="muted">2026-02-20</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="name">Hamektok Hakaari</td>
+                        <td class="muted">REQ-0022</td>
+                        <td>Cerberus ×3</td>
+                        <td class="muted">2026-02-05</td>
+                        <td class="isk">750,000,000</td>
+                        <td class="muted">15%</td>
+                        <td class="muted">112,500,000</td>
+                        <td><span class="badge b-paid">Paid</span></td>
+                        <td class="muted">2026-02-07</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- /main -->
+</div><!-- /body-wrap -->
+
+<!-- Assign Builder Modal -->
+<div id="assignModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:999;align-items:center;justify-content:center">
+    <div style="background:#001525;border:1px solid #00d9ff;padding:28px;max-width:420px;width:90%">
+        <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:#00d9ff;margin-bottom:16px">Assign Builder</div>
+        <div style="font-size:14px;color:#668899;margin-bottom:16px">Request has been quoted and accepted. Assign a builder to begin production.</div>
+        <div style="margin-bottom:14px">
+            <label style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:#446688;display:block;margin-bottom:6px">Builder</label>
+            <select style="width:100%">
+                <option>Hamektok Hakaari — T1/T2/Capitals/Modules (2 active)</option>
+                <option>Aldent Rendrag — Capitals/T2 (1 active)</option>
+                <option>Serak Volun — T1/Modules (0 active)</option>
+            </select>
+        </div>
+        <div style="margin-bottom:20px">
+            <label style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:#446688;display:block;margin-bottom:6px">Builder Cut %</label>
+            <input type="number" value="15" style="width:100px">
+            <span style="color:#668899;font-size:14px;margin-left:8px">% of contract price</span>
+        </div>
+        <div style="display:flex;gap:10px">
+            <button class="btn btn-success btn-sm" onclick="document.getElementById('assignModal').style.display='none'">Assign Builder</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('assignModal').style.display='none'">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Panel switching
+    function showPanel(name, btn) {
+        document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
+        document.getElementById('panel-' + name).classList.remove('hidden');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    }
+
+    // Filter pills
+    function setPill(btn) {
+        btn.closest('.filter-pills').querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // Expandable rows
+    function toggleExpand(id, row) {
+        const expRow = document.getElementById('expand-' + id);
+        if (!expRow) return;
+        const hidden = expRow.classList.contains('hidden');
+        expRow.classList.toggle('hidden', !hidden);
+        row.classList.toggle('expanded', hidden);
+    }
+
+    // ── Quote Tool ──────────────────────────────────────────────
+    // Material format: [name, qty, jbv, jsv, defaultBasis, defaultPct, category]
+    // category: 'mineral' | 'reaction' | 'planetary' | 'import'
+    const SAMPLE_MATERIALS = {
+        'Naglfar': {
+            jitaSell: 2700000000,
+            jobCosts: [
+                { label: 'Hull Assembly (L1) — Ship Mfg II rig', isk: 54363652 },
+                { label: 'Components (L2-L4) — Struct & Comp I rig', isk: 82998815 },
+            ],
+            materials: [
+                // Minerals — JBV (mined/available locally)
+                ['Pyerite',                    6644787,     17,     18, 'JBV', 100, 'mineral'],
+                ['Mexallon',                   1864109,     67,     70, 'JBV', 100, 'mineral'],
+                ['Isogen',                      509363,    182,    187, 'JBV', 100, 'mineral'],
+                ['Tritanium',                  1845601,      4,      4, 'JBV', 100, 'mineral'],
+                ['Nocxium',                      50703,    657,    719, 'JBV', 100, 'mineral'],
+                ['Zydrine',                      25911,    883,    993, 'JBV', 100, 'mineral'],
+                ['Megacyte',                     12804,   2406,   2709, 'JBV', 100, 'mineral'],
+                ['Morphite',                      1323,  19250,  20100, 'JBV', 100, 'mineral'],
+                // Reaction products — JBV (Tatara produces locally)
+                ['Reinforced Carbon Fiber',      21354,   3763,   3987, 'JBV', 100, 'reaction'],
+                ['Pressurized Oxidizers',        14247,   3853,   4112, 'JBV', 100, 'reaction'],
+                ['C3-FTM Acid',                    460,  71140,  77210, 'JBV', 100, 'reaction'],
+                ['Graphene Nanoribbons',            988,  30320,  31300, 'JBV', 100, 'reaction'],
+                ['Carbon-86 Epoxy Resin',           672,  39070,  47330, 'JBV', 100, 'reaction'],
+                ['Methanofullerene',                336,  11700,  12350, 'JBV', 100, 'reaction'],
+                ['Lanthanum Metallofullerene',      336,  16610,  17770, 'JBV', 100, 'reaction'],
+                ['Scandium Metallofullerene',       230,  12360,  13900, 'JBV', 100, 'reaction'],
+                ['Fulleroferrocene',               1166,   1059,   1199, 'JBV', 100, 'reaction'],
+                ['PPD Fullerene Fibers',            336,   7501,   8290, 'JBV', 100, 'reaction'],
+                ['Fullerene Intercalated Graphite', 688,  11090,  12130, 'JBV', 100, 'reaction'],
+                // Planetary materials — JBV (local PI)
+                ['Supertensile Plastics',           472,  13210,  14150, 'JBV', 100, 'planetary'],
+                ['Nanites',                         597,   8147,   8947, 'JBV', 100, 'planetary'],
+                ['Viral Agent',                     472,  11250,  11980, 'JBV', 100, 'planetary'],
+                ['Test Cultures',                   597,   9400,   9836, 'JBV', 100, 'planetary'],
+                ['Chiral Structures',              2848,    668,    708, 'JBV', 100, 'planetary'],
+                ['Water',                          2848,    388,    423, 'JBV', 100, 'planetary'],
+                // Imported — JSV (must buy from Jita)
+                ['Isotropic Neofullerene Beta-6',   125, 1550000, 1632000, 'JSV', 100, 'import'],
+                ['Isotropic Neofullerene Gamma-9',  125, 1343000, 1500000, 'JSV', 100, 'import'],
+                ['Isotropic Neofullerene Alpha-3',  125, 1321000, 1380000, 'JSV', 100, 'import'],
+                ['Sense-Heuristic Neurolink Enh.',  540,  303200,  393000, 'JSV', 100, 'import'],
+                ['Electro-Neural Signaller',          1, 120700000, 127700000, 'JSV', 100, 'import'],
+                ['Meta-Operant Neurolink Enh.',       9, 8514000, 11100000, 'JSV', 100, 'import'],
+                ['Wetware Mainframe',                32, 1700000,  1983000, 'JSV', 100, 'import'],
+                ['Self-Harmonizing Power Core',      28, 1800000,  1993000, 'JSV', 100, 'import'],
+                ['Integrity Response Drones',        22, 2000000,  2227000, 'JSV', 100, 'import'],
+                ['Gel-Matrix Biopaste',             265,   95000,  109200, 'JSV', 100, 'import'],
+                ['Synthetic Synapses',              265,   82000,   89610, 'JSV', 100, 'import'],
+                ['Organic Mortar Applicators',       15,  870000,  939500, 'JSV', 100, 'import'],
+                ['Broadcast Node',                    6, 1750000, 1890000, 'JSV', 100, 'import'],
+                ['Recursive Computing Module',        6, 1180000, 1291000, 'JSV', 100, 'import'],
+                ['Hermetic Membranes',               89,   92000,  100600, 'JSV', 100, 'import'],
+            ]
+        },
+        'Muninn': {
+            jitaSell: 138000000,
+            jobCosts: [
+                { label: 'Hull Assembly — Ship Mfg II rig', isk: 4200000 },
+                { label: 'T2 Components — Struct & Comp I rig', isk: 980000 },
+            ],
+            materials: [
+                ['Tritanium',         1883250,    4,    4, 'JBV', 100, 'mineral'],
+                ['Pyerite',            471000,   17,   18, 'JBV', 100, 'mineral'],
+                ['Mexallon',           141000,   67,   70, 'JBV', 100, 'mineral'],
+                ['Isogen',              28500,  182,  187, 'JBV', 100, 'mineral'],
+                ['Nocxium',              5400,  657,  719, 'JBV', 100, 'mineral'],
+                ['Zydrine',              1440, 883,   993, 'JBV', 100, 'mineral'],
+                ['Megacyte',              360, 2406,  2709,'JBV', 100, 'mineral'],
+                ['Morphite',               85, 19250,20100,'JBV', 100, 'mineral'],
+                ['Fernite Carbide Comp. Armor Plate', 5625, 4100, 4500, 'JSV', 100, 'import'],
+                ['Nanotranskinetic Enamel Wire',       150, 8800, 9600, 'JSV', 100, 'import'],
+                ['Tungsten Carbide Armor Plate',      1350, 3200, 3500, 'JSV', 100, 'import'],
+                ['Ladar Sensor Cluster',               165, 6200, 6800, 'JSV', 100, 'import'],
+                ['Nanomechanical Microprocessor',     1350, 3600, 3950, 'JSV', 100, 'import'],
+                ['Nuclear Reactor Unit',               450, 5200, 5700, 'JSV', 100, 'import'],
+                ['Plasma Thruster',                     75, 9800,10700, 'JSV', 100, 'import'],
+                ['R.A.M. - Starship Tech',              18, 165000,180000,'JSV',100,'import'],
+            ]
+        },
+        'Large Shield Extender II': {
+            jitaSell: 4800000,
+            jobCosts: [
+                { label: 'Module Assembly — Equip & Consumable II rig', isk: 85000 },
+            ],
+            materials: [
+                ['Tritanium',   180000,   4,    4, 'JBV', 100, 'mineral'],
+                ['Mexallon',     24000,  67,   70, 'JBV', 100, 'mineral'],
+                ['Nocxium',       3200, 657,  719, 'JBV', 100, 'mineral'],
+                ['Zydrine',        800, 883,  993, 'JBV', 100, 'mineral'],
+                ['R.A.M.',          50, 162000, 175000, 'JSV', 100, 'import'],
+                ['Morphite',        42, 19250, 20100, 'JSV', 100, 'import'],
+            ]
+        }
+    };
+
+    let qtData = {};
+    let matRows = [];  // live state: {name, qty, jbv, jsv, basis, pct, category}
+
+    const CAT_LABELS = {
+        mineral:   '<span class="cat-badge cat-mineral">Mineral</span>',
+        reaction:  '<span class="cat-badge cat-reaction">Reaction</span>',
+        planetary: '<span class="cat-badge cat-planetary">Planetary</span>',
+        import:    '<span class="cat-badge cat-import">Import</span>',
+    };
+
+    function isk(n) { return n.toLocaleString('en', {maximumFractionDigits:0}); }
+    function iskSm(n) { return n >= 1e9 ? (n/1e9).toFixed(2)+'B' : n >= 1e6 ? (n/1e6).toFixed(1)+'M' : isk(n); }
+
+    function openQuote(reqId, item, qty, type) {
+        showPanel('quote', null);
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('quoteEmpty').classList.add('hidden');
+        document.getElementById('quoteContent').classList.remove('hidden');
+        document.getElementById('quoteContext').textContent = reqId + ' — ' + item + ' x' + qty;
+        document.getElementById('qtItemName').textContent = item;
+        document.getElementById('qtQty').textContent = qty;
+        document.getElementById('qtBuildParams').textContent = '| ME10 · SCI 5.74% · Tax 0.5%';
+
+        const def = SAMPLE_MATERIALS[item] || SAMPLE_MATERIALS['Naglfar'];
+        qtData = { reqId, item, qty, jitaSell: def.jitaSell, jobCosts: def.jobCosts };
+        // Clone material rows into live state
+        matRows = def.materials.map(([name, q, jbv, jsv, basis, pct, cat]) =>
+            ({ name, qty: q * qty, jbv, jsv, basis, pct, defaultBasis: basis, defaultPct: pct, cat })
+        );
+        renderTable();
+        recalcQuote();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('materialsBody');
+        tbody.innerHTML = '';
+        matRows.forEach((r, i) => {
+            const price = r.basis === 'JBV' ? r.jbv : r.jsv;
+            const effective = price * (r.pct / 100);
+            const total = r.qty * effective;
+            const rowClass = r.basis === 'JBV' ? 'jbv-row' : 'jsv-row';
+            tbody.innerHTML += `<tr class="${rowClass}">
+                <td style="color:#cce6ff">${r.name}</td>
+                <td>${CAT_LABELS[r.cat] || r.cat}</td>
+                <td class="num">${r.qty.toLocaleString()}</td>
+                <td style="text-align:center">
+                    <button class="basis-btn ${r.basis.toLowerCase()}" onclick="toggleBasis(${i})">${r.basis}</button>
+                </td>
+                <td style="text-align:center">
+                    <input class="pct-input" type="number" value="${r.pct}" min="1" max="200"
+                        onchange="setPct(${i}, this.value)" title="% of ${r.basis}">
+                    <span style="font-size:10px;color:#446688">%</span>
+                </td>
+                <td class="num">${effective.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+                <td class="row-total">${isk(total)}</td>
+            </tr>`;
+        });
+        renderFoot();
+        updateBasisSummary();
+    }
+
+    function renderFoot() {
+        let jbvTot = 0, jsvTot = 0;
+        matRows.forEach(r => {
+            const price = (r.basis === 'JBV' ? r.jbv : r.jsv) * (r.pct / 100);
+            const t = r.qty * price;
+            if (r.basis === 'JBV') jbvTot += t; else jsvTot += t;
+        });
+        const jobTotal = (qtData.jobCosts || []).reduce((s, j) => s + j.isk, 0);
+        const grand = jbvTot + jsvTot + jobTotal;
+        qtData.jbvTot = jbvTot; qtData.jsvTot = jsvTot; qtData.jobTotal = jobTotal;
+
+        let footHtml = `
+            <tr>
+                <td colspan="6" style="color:#00ff88;font-size:12px">JBV Materials</td>
+                <td class="tfoot-jbv">${isk(jbvTot)}</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="color:#00d9ff;font-size:12px">JSV Materials</td>
+                <td class="tfoot-jsv">${isk(jsvTot)}</td>
+            </tr>`;
+        (qtData.jobCosts || []).forEach(j => {
+            footHtml += `<tr>
+                <td colspan="6" style="color:#bb88ff;font-size:12px">${j.label}</td>
+                <td class="tfoot-job">${isk(j.isk)}</td>
+            </tr>`;
+        });
+        footHtml += `<tr>
+            <td colspan="6" style="color:#ffcc44;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px">TOTAL BUILD COST</td>
+            <td class="tfoot-grand">${isk(grand)}</td>
+        </tr>`;
+        document.getElementById('materialsFoot').innerHTML = footHtml;
+    }
+
+    function updateBasisSummary() {
+        const jbvCount = matRows.filter(r => r.basis === 'JBV').length;
+        const jsvCount = matRows.filter(r => r.basis === 'JSV').length;
+        document.getElementById('basisSummary').textContent =
+            `${jbvCount} JBV · ${jsvCount} JSV`;
+    }
+
+    function toggleBasis(i) {
+        matRows[i].basis = matRows[i].basis === 'JBV' ? 'JSV' : 'JBV';
+        renderTable();
+        recalcQuote();
+    }
+
+    function setPct(i, val) {
+        matRows[i].pct = Math.max(1, Math.min(200, parseFloat(val) || 100));
+        renderTable();
+        recalcQuote();
+    }
+
+    function setAllBasis(basis) {
+        matRows.forEach(r => r.basis = basis);
+        renderTable();
+        recalcQuote();
+    }
+
+    function resetDefaults() {
+        matRows.forEach(r => { r.basis = r.defaultBasis; r.pct = r.defaultPct; });
+        renderTable();
+        recalcQuote();
+    }
+
+    function recalcQuote() {
+        if (!qtData.jobCosts) return;
+        const jbvTot = qtData.jbvTot || 0;
+        const jsvTot = qtData.jsvTot || 0;
+        const jobTot = qtData.jobTotal || 0;
+        const subtotal = jbvTot + jsvTot + jobTot;
+        const markup = parseFloat(document.getElementById('markupPct').value) / 100 || 0;
+        const markupAmt = subtotal * markup;
+        const total = subtotal + markupAmt;
+        const builderCut = total * 0.70;
+        const corpMargin = total - subtotal - builderCut;
+        const vsJita = qtData.jitaSell ? qtData.jitaSell - total : null;
+
+        document.getElementById('qsJBV').textContent      = isk(jbvTot) + ' ISK';
+        document.getElementById('qsJSV').textContent      = isk(jsvTot) + ' ISK';
+        document.getElementById('qsJob').textContent      = isk(jobTot) + ' ISK';
+        document.getElementById('qsSubtotal').textContent = isk(subtotal) + ' ISK';
+        document.getElementById('qsMarkup').textContent   = isk(markupAmt) + ' ISK';
+        document.getElementById('qsTotal').textContent    = isk(total) + ' ISK';
+        document.getElementById('qsMargin').textContent   = isk(corpMargin) + ' ISK';
+        document.getElementById('qsBuilder').textContent  = isk(builderCut) + ' ISK';
+        if (vsJita !== null) {
+            const pct = (vsJita / qtData.jitaSell * 100).toFixed(1);
+            const el = document.getElementById('qsVsJita');
+            el.textContent = (vsJita >= 0 ? '-' : '+') + iskSm(Math.abs(vsJita)) + ' vs Jita (' + pct + '% below sell)';
+            el.style.color = vsJita >= 0 ? '#00cc77' : '#ff6666';
+        }
+        qtData.total = total;
+    }
+
+    function showDiscordPreview() {
+        document.getElementById('discordPreview').classList.remove('hidden');
+        document.getElementById('dcItem').textContent = qtData.item + ' x' + qtData.qty;
+        document.getElementById('dcCustomer').textContent = qtData.reqId;
+        document.getElementById('dcQty').textContent = qtData.qty;
+        document.getElementById('dcTotal').textContent = isk(qtData.total||0);
+    }
+
+    function saveQuote() {
+        alert('Quote saved — in production this POSTs to the backend and sets request status to Quoted.');
+    }
+
+    function assignDialog() {
+        document.getElementById('assignModal').style.display = 'flex';
+    }
+</script>
+</body>
+</html>
