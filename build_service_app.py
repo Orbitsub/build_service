@@ -28,7 +28,7 @@ EVE_VERIFY_URL  = 'https://esi.evetech.net/verify/'
 EVE_SCOPE       = 'publicData'
 
 # ── App ────────────────────────────────────────────────────────────────────
-app = Flask(__name__, static_folder='assets', static_url_path='/assets')
+app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET', secrets.token_hex(32))
 
 
