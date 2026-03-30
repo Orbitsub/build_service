@@ -14,6 +14,7 @@ from urllib.parse import urlencode
 import requests
 from flask import (Flask, g, redirect, render_template, request,
                     session, url_for, jsonify, abort)
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 APP_DIR     = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +31,9 @@ EVE_SCOPE       = 'publicData'
 # ── App ────────────────────────────────────────────────────────────────────
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET', secrets.token_hex(32))
+# Trust one level of proxy (Nginx → Gunicorn) so that X-Forwarded-For
+# and X-Forwarded-Proto headers are used for the real client IP / HTTPS detection.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 
 # ── DB helpers ─────────────────────────────────────────────────────────────
