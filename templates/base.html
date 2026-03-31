@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Infinite Solutions — Build Service{% endblock %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-corp">Infinite Solutions</div>
+        <div class="header-title">Build Service</div>
+        <div class="header-sub">Manufacturing On Demand</div>
+    </div>
+
+    <!-- SSO Bar -->
+    {% if character_name %}
+    <div class="sso-bar">
+        <span class="char-corp">{{ corp_name or 'Unknown Corp' }}</span>
+        <span class="char-name">{{ character_name }}</span>
+        <a href="{{ url_for('auth_logout') }}" class="btn-sso">Logout</a>
+    </div>
+    {% else %}
+    <div class="sso-bar" style="justify-content:center">
+        <a href="{{ url_for('auth_login') }}" class="btn-sso" style="padding:10px 32px;font-size:14px">
+            ⬡ Login with EVE Online
+        </a>
+        <span style="font-size:13px;color:#668899">Alliance membership verified automatically</span>
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+</div><!-- /container -->
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

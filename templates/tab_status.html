@@ -1,0 +1,86 @@
+<!-- ════════════════════════════════════════════
+     TAB 2 — STATUS LOOKUP
+     ════════════════════════════════════════════ -->
+<div id="tab-status" class="tab-content">
+    <div class="section">
+        <div class="section-title">Request Status Lookup</div>
+        <div class="section-sub">Enter your request ID to see current status and details.</div>
+
+        <div class="status-lookup">
+            <div class="field">
+                <label>Request ID</label>
+                <input type="text" value="REQ-0042" style="width:260px">
+            </div>
+            <button class="btn btn-primary btn-sm" style="height:42px;margin-bottom:0">Look Up</button>
+        </div>
+
+        <!-- Sample result -->
+        <div class="request-detail">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+                <div>
+                    <span style="font-family:'Orbitron',sans-serif;font-size:13px;color:#668899">REQ-0042</span>
+                    &nbsp;&nbsp;
+                    <span style="font-family:'Orbitron',sans-serif;font-size:18px;color:#cce6ff">Naglfar</span>
+                    <span style="font-size:14px;color:#668899;margin-left:8px">Dreadnought · ×1</span>
+                </div>
+                <span class="badge badge-building">In Progress</span>
+            </div>
+
+            <!-- Status tracker -->
+            <div class="status-track">
+                <div class="status-step done">
+                    <div class="step-dot done">✓</div>
+                    <div class="step-label done">Submitted</div>
+                </div>
+                <div class="status-step done">
+                    <div class="step-dot done">✓</div>
+                    <div class="step-label done">Quoted</div>
+                </div>
+                <div class="status-step done">
+                    <div class="step-dot done">✓</div>
+                    <div class="step-label done">Accepted</div>
+                </div>
+                <div class="status-step done">
+                    <div class="step-dot done">✓</div>
+                    <div class="step-label done">Assigned</div>
+                </div>
+                <div class="status-step active">
+                    <div class="step-dot active">◉</div>
+                    <div class="step-label active">Building</div>
+                </div>
+                <div class="status-step">
+                    <div class="step-dot">○</div>
+                    <div class="step-label">Delivered</div>
+                </div>
+                <div class="status-step">
+                    <div class="step-dot">○</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Quote Price</label>
+                    <div class="val isk">3,420,000,000 ISK</div>
+                </div>
+                <div class="detail-item">
+                    <label>Delivery Location</label>
+                    <div class="val">LX-ZOJ Citadel</div>
+                </div>
+                <div class="detail-item">
+                    <label>Target Deadline</label>
+                    <div class="val">2026-03-18</div>
+                </div>
+                <div class="detail-item">
+                    <label>Submitted</label>
+                    <div class="val">2026-03-06</div>
+                </div>
+            </div>
+
+            <div style="font-size:14px;color:#668899">
+                Builder assigned. Components are in production.
+                You will receive an EVE contract when the build is ready for delivery.
+            </div>
+        </div>
+    </div>
+</div><!-- /tab-status -->

@@ -1,0 +1,246 @@
+<!-- ════════════════════════════════════════════
+     TAB 1 — CUSTOMER REQUEST FORM
+     ════════════════════════════════════════════ -->
+<div id="tab-customer" class="tab-content active">
+
+    <div class="section">
+        <div class="section-title">Submit a Build Request</div>
+        <div class="section-sub">
+            Request ships, modules, or full doctrine fits. Quotes are sent via Discord DM.
+            Alliance SSO verified — your character has been confirmed.
+        </div>
+
+        <!-- Request type toggle -->
+        <div class="toggle-row">
+            <button class="toggle-btn active" onclick="setMode('item', this)">Personalized Order</button>
+            <button class="toggle-btn" onclick="setMode('fit', this)">Doctrine Fit</button>
+        </div>
+
+        <!-- Mode: Single item -->
+        <div id="mode-item">
+            <div class="form-grid">
+                <div class="field full">
+                    <label>Item to Build</label>
+                    <div class="item-search-wrap">
+                        <input type="text" id="itemSearch" placeholder="Search ships, modules, ammo…"
+                                oninput="filterItems(this.value)" onfocus="showDropdown()" onblur="hideDropdown()">
+                        <div class="item-dropdown" id="itemDropdown" style="display:none">
+                            <div onclick="selectItem('Apocalypse', 'T1 Battleship')">Apocalypse <span class="item-category">T1 Battleship</span></div>
+                            <div onclick="selectItem('Raven', 'T1 Battleship')">Raven <span class="item-category">T1 Battleship</span></div>
+                            <div onclick="selectItem('Nidhoggur', 'Carrier')">Nidhoggur <span class="item-category">Carrier</span></div>
+                            <div onclick="selectItem('Naglfar', 'Dreadnought')">Naglfar <span class="item-category">Dreadnought</span></div>
+                            <div onclick="selectItem('Hound', 'T2 Stealth Bomber')">Hound <span class="item-category">T2 Stealth Bomber</span></div>
+                            <div onclick="selectItem('Muninn', 'T2 Heavy Assault Cruiser')">Muninn <span class="item-category">T2 Heavy Assault Cruiser</span></div>
+                            <div onclick="selectItem('Cerberus', 'T2 Heavy Assault Cruiser')">Cerberus <span class="item-category">T2 Heavy Assault Cruiser</span></div>
+                            <div onclick="selectItem('1400mm Howitzer Artillery II', 'T2 Module')">1400mm Howitzer Artillery II <span class="item-category">T2 Module</span></div>
+                            <div onclick="selectItem('Carbonized Lead XL', 'Ammo')">Carbonized Lead XL <span class="item-category">Ammo</span></div>
+                            <div onclick="selectItem('Large Shield Extender II', 'T2 Module')">Large Shield Extender II <span class="item-category">T2 Module</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Quantity</label>
+                    <input type="number" value="1" min="1" placeholder="How many?">
+                </div>
+
+                <div class="field">
+                    <label>Priority</label>
+                    <select>
+                        <option>Normal (7–14 days)</option>
+                        <option>Urgent (3–5 days, +15% fee)</option>
+                        <option>Flexible (whenever, best price)</option>
+                    </select>
+                </div>
+
+                <div class="field full">
+                    <label>Pickup / Delivery Location</label>
+                    <input type="text" id="deliveryLoc1" value="LX-ZOJ — Infinite Solutions Sotiyo (default)">
+                </div>
+                <div class="field full" style="flex-direction:row;align-items:center;gap:12px">
+                    <input type="checkbox" id="needsDelivery1" onchange="toggleDelivery('1')" style="width:auto;accent-color:#00d9ff">
+                    <label for="needsDelivery1" style="font-size:14px;color:#aabbcc;letter-spacing:0;text-transform:none;cursor:pointer">
+                        I need delivery to a different system
+                        <span style="color:#ffcc44;font-size:13px;margin-left:6px">(hauling surcharge applies — TBD)</span>
+                    </label>
+                </div>
+                <div class="field full" id="deliveryExtra1" style="display:none">
+                    <label>Delivery Destination</label>
+                    <input type="text" placeholder="BWF-ZZ — Alliance Keepstar">
+                </div>
+
+                <div class="field">
+                    <label>Requested By</label>
+                    <input type="text" value="{{ character_name or '' }}" readonly style="color:#00ff88">
+                </div>
+
+                <div class="field">
+                    <label>Preferred Deadline</label>
+                    <input type="date">
+                </div>
+
+                <div class="field full">
+                    <label>Notes / Special Requirements</label>
+                    <textarea placeholder="Any specific ME/TE requirements, alternate delivery options, bulk discount requests, etc."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode: Doctrine fit -->
+        <div id="mode-fit" style="display:none">
+            <div style="margin-bottom:14px;font-size:14px;color:#aabbcc">
+                Select a doctrine fit to order the complete ship + fittings as a package.
+                Individual items can be adjusted after selection.
+            </div>
+            <div class="fit-grid">
+                <div class="fit-card selected" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Nightmare — WC-EN — DPS v1.3</div>
+                        <div class="fit-class">T1 Battleship · Sansha</div>
+                    </div>
+                    <div class="fit-items-count" style="color:#00ff88">✓ Selected</div>
+                </div>
+                <div class="fit-card" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Muninn — HAC Fleet</div>
+                        <div class="fit-class">T2 Heavy Assault Cruiser</div>
+                    </div>
+                    <div class="fit-items-count">28 items</div>
+                </div>
+                <div class="fit-card" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Cerberus — Missile Fleet</div>
+                        <div class="fit-class">T2 Heavy Assault Cruiser</div>
+                    </div>
+                    <div class="fit-items-count">31 items</div>
+                </div>
+                <div class="fit-card" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Naglfar — Siege</div>
+                        <div class="fit-class">Dreadnought</div>
+                    </div>
+                    <div class="fit-items-count">22 items</div>
+                </div>
+                <div class="fit-card" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Nidhoggur — Combat Carrier</div>
+                        <div class="fit-class">Carrier</div>
+                    </div>
+                    <div class="fit-items-count">19 items</div>
+                </div>
+                <div class="fit-card" onclick="selectFit(this)">
+                    <div>
+                        <div class="fit-name">Hound — Covert Ops</div>
+                        <div class="fit-class">T2 Stealth Bomber</div>
+                    </div>
+                    <div class="fit-items-count">24 items</div>
+                </div>
+            </div>
+
+            <div style="font-size:14px;color:#668899;margin-bottom:12px">
+                Selected fit: <span style="color:#00d9ff;font-family:'Orbitron',sans-serif">Nightmare — WC-EN — DPS v1.3</span>
+                &nbsp;·&nbsp; 33 items &nbsp;·&nbsp; Est. materials: <span style="color:#ffcc44">~1.4B ISK</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label>Quantity (full fits)</label>
+                    <input type="number" value="1" min="1">
+                </div>
+                <div class="field">
+                    <label>Priority</label>
+                    <select>
+                        <option>Normal (7–14 days)</option>
+                        <option>Urgent (3–5 days, +15% fee)</option>
+                        <option>Flexible (whenever, best price)</option>
+                    </select>
+                </div>
+                <div class="field full">
+                    <label>Pickup / Delivery Location</label>
+                    <input type="text" value="LX-ZOJ — Infinite Solutions Sotiyo (default)">
+                </div>
+                <div class="field full" style="flex-direction:row;align-items:center;gap:12px">
+                    <input type="checkbox" id="needsDelivery2" onchange="toggleDelivery('2')" style="width:auto;accent-color:#00d9ff">
+                    <label for="needsDelivery2" style="font-size:14px;color:#aabbcc;letter-spacing:0;text-transform:none;cursor:pointer">
+                        I need delivery to a different system
+                        <span style="color:#ffcc44;font-size:13px;margin-left:6px">(hauling surcharge applies — TBD)</span>
+                    </label>
+                </div>
+                <div class="field full" id="deliveryExtra2" style="display:none">
+                    <label>Delivery Destination</label>
+                    <input type="text" placeholder="BWF-ZZ — Alliance Keepstar">
+                </div>
+                <div class="field full">
+                    <label>Notes</label>
+                    <textarea placeholder="e.g. leave out the damage mods, I'll fit those myself"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn-primary">Submit Request</button>
+            <button class="btn btn-secondary">Clear Form</button>
+            <span style="font-size:13px;color:#668899;margin-left:8px">
+                You'll receive a quote via Discord DM within 24h
+            </span>
+        </div>
+
+        <div class="disclaimer">
+            <strong>How it works:</strong> After submitting, Hamektok will review your request,
+            generate a quote (materials + build fee), and send it to you via Discord DM.
+            Once you accept, a builder will be assigned and you'll receive an EVE contract
+            when the build is complete. Payment is made through the contract.
+        </div>
+    </div>
+</div><!-- /tab-customer -->
+
+<script>
+    function setMode(mode, btn) {
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('mode-item').style.display = mode === 'item' ? '' : 'none';
+        document.getElementById('mode-fit').style.display  = mode === 'fit'  ? '' : 'none';
+    }
+
+    let dropdownTimer;
+    function showDropdown() {
+        clearTimeout(dropdownTimer);
+        document.getElementById('itemDropdown').style.display = 'block';
+    }
+    function hideDropdown() {
+        dropdownTimer = setTimeout(() => {
+            document.getElementById('itemDropdown').style.display = 'none';
+        }, 200);
+    }
+    function filterItems(val) {
+        const dd = document.getElementById('itemDropdown');
+        dd.style.display = 'block';
+        dd.querySelectorAll('div').forEach(d => {
+            d.style.display = val === '' || d.textContent.toLowerCase().includes(val.toLowerCase()) ? '' : 'none';
+        });
+    }
+    function selectItem(name, cat) {
+        document.getElementById('itemSearch').value = name;
+        document.getElementById('itemDropdown').style.display = 'none';
+    }
+
+    function selectFit(card) {
+        document.querySelectorAll('.fit-card').forEach(c => {
+            c.classList.remove('selected');
+            const cnt = c.querySelector('.fit-items-count');
+            cnt.style.color = '';
+            if (cnt.textContent.trim() === '✓ Selected') {
+                cnt.textContent = '— items';
+            }
+        });
+        card.classList.add('selected');
+        card.querySelector('.fit-items-count').textContent = '✓ Selected';
+        card.querySelector('.fit-items-count').style.color = '#00ff88';
+    }
+
+    function toggleDelivery(n) {
+        const cb = document.getElementById('needsDelivery' + n);
+        const ex = document.getElementById('deliveryExtra' + n);
+        if (ex) ex.style.display = cb.checked ? '' : 'none';
+    }
+</script>

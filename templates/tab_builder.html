@@ -1,0 +1,247 @@
+<!-- ════════════════════════════════════════════
+     TAB 3 — BUILDER JOB BOARD
+     ════════════════════════════════════════════ -->
+<div id="tab-builder" class="tab-content">
+
+    <!-- Builder stats -->
+    <div class="info-row" style="margin-top:20px">
+        <div class="info-card">
+            <div class="ic-label">Active Jobs</div>
+            <div class="ic-val">2</div>
+        </div>
+        <div class="info-card">
+            <div class="ic-label">Completed (All Time)</div>
+            <div class="ic-val green">17</div>
+        </div>
+        <div class="info-card">
+            <div class="ic-label">Earnings Unpaid</div>
+            <div class="ic-val gold">284,500,000 ISK</div>
+        </div>
+        <div class="info-card">
+            <div class="ic-label">Total Earned (All Time)</div>
+            <div class="ic-val gold">2,140,000,000 ISK</div>
+        </div>
+    </div>
+
+    <!-- Available jobs -->
+    <div class="section">
+        <div class="section-title">Available Jobs — Claim a Build</div>
+        <div class="section-sub">
+            Simple builds can be self-assigned. Complex builds (capitals, multi-component)
+            are dispatched by Hamektok and may be split into sub-tasks.
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Type</th>
+                    <th>Delivery</th>
+                    <th>Deadline</th>
+                    <th>Est. Value</th>
+                    <th>Your Cut (~15%)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="muted">REQ-0047</td>
+                    <td>Muninn</td>
+                    <td>3</td>
+                    <td><span class="badge badge-simple">Simple</span></td>
+                    <td>LX-ZOJ</td>
+                    <td>2026-03-20</td>
+                    <td class="isk">1,050,000,000</td>
+                    <td class="green">~157,500,000</td>
+                    <td><button class="btn btn-success btn-sm">Claim</button></td>
+                </tr>
+                <tr>
+                    <td class="muted">REQ-0048</td>
+                    <td>Hound × 10 + ammo package</td>
+                    <td>10</td>
+                    <td><span class="badge badge-simple">Simple</span></td>
+                    <td>LX-ZOJ</td>
+                    <td>2026-03-25</td>
+                    <td class="isk">620,000,000</td>
+                    <td class="green">~93,000,000</td>
+                    <td><button class="btn btn-success btn-sm">Claim</button></td>
+                </tr>
+                <tr>
+                    <td class="muted">REQ-0044</td>
+                    <td>Nidhoggur</td>
+                    <td>1</td>
+                    <td><span class="badge badge-complex">Complex</span></td>
+                    <td>LX-ZOJ</td>
+                    <td>2026-03-30</td>
+                    <td class="isk">14,200,000,000</td>
+                    <td class="green">~2,130,000,000*</td>
+                    <td><button class="btn btn-warn btn-sm">View Sub-tasks</button></td>
+                </tr>
+                <tr>
+                    <td class="muted">REQ-0049</td>
+                    <td>Large Shield Extender II ×50</td>
+                    <td>50</td>
+                    <td><span class="badge badge-simple">Simple</span></td>
+                    <td>LX-ZOJ</td>
+                    <td>2026-04-01</td>
+                    <td class="isk">180,000,000</td>
+                    <td class="green">~27,000,000</td>
+                    <td><button class="btn btn-success btn-sm">Claim</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Complex build sub-task breakdown (expanded) -->
+        <div style="margin-top:20px">
+            <div style="font-family:'Orbitron',sans-serif;font-size:12px;color:#ff9922;letter-spacing:1px;margin-bottom:10px">
+                ▸ REQ-0044 — Nidhoggur Sub-tasks (assigned by Hamektok)
+            </div>
+            <div class="subtasks">
+                <div class="subtask-row">
+                    <span>Capital Armor Plates × 5</span>
+                    <span style="color:#668899">Component Builder</span>
+                    <span class="badge badge-pending">Open</span>
+                    <button class="btn btn-success btn-sm">Claim</button>
+                </div>
+                <div class="subtask-row">
+                    <span>Capital Shield Emitters × 5</span>
+                    <span style="color:#668899">Component Builder</span>
+                    <span class="badge badge-pending">Open</span>
+                    <button class="btn btn-success btn-sm">Claim</button>
+                </div>
+                <div class="subtask-row">
+                    <span>Capital Jump Drive × 1</span>
+                    <span style="color:#668899">Component Builder</span>
+                    <span class="badge badge-assigned">Claimed — Aldent Rendrag</span>
+                    <button class="btn btn-secondary btn-sm" disabled>Claimed</button>
+                </div>
+                <div class="subtask-row">
+                    <span>Nidhoggur Hull (Final Assembly)</span>
+                    <span style="color:#668899">Hull Builder — awaiting components</span>
+                    <span class="badge badge-pending">Open</span>
+                    <button class="btn btn-success btn-sm">Claim</button>
+                </div>
+            </div>
+            <div style="font-size:12px;color:#668899;margin-top:8px">
+                * Total builder payout split proportionally across sub-task builders based on material contribution.
+            </div>
+        </div>
+    </div>
+
+    <!-- My active jobs -->
+    <div class="section">
+        <div class="section-title">My Active Jobs</div>
+        <div class="section-sub">Jobs you have claimed. Mark delivered once the EVE contract is up.</div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Customer</th>
+                    <th>Deadline</th>
+                    <th>Your Cut</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="muted">REQ-0042</td>
+                    <td>Naglfar</td>
+                    <td>1</td>
+                    <td>Vexillum Praetorian</td>
+                    <td>2026-03-18</td>
+                    <td class="green">513,000,000</td>
+                    <td><span class="badge badge-building">Building</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="showDeliverModal()">Mark Delivered</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="muted">REQ-0038</td>
+                    <td>Cerberus ×5</td>
+                    <td>5</td>
+                    <td>Darkwind Kael</td>
+                    <td>2026-03-14</td>
+                    <td class="green">187,500,000</td>
+                    <td><span class="badge badge-delivered">Delivered</span></td>
+                    <td><span style="font-size:13px;color:#668899">Awaiting confirmation</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Payout history -->
+    <div class="section">
+        <div class="section-title">Payout History</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Job</th>
+                    <th>Item</th>
+                    <th>Contract Price</th>
+                    <th>Your Cut</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="muted">2026-02-28</td>
+                    <td class="muted">REQ-0031</td>
+                    <td>Muninn ×5</td>
+                    <td class="isk">1,050,000,000</td>
+                    <td class="green">157,500,000</td>
+                    <td><span class="badge badge-complete">Paid</span></td>
+                </tr>
+                <tr>
+                    <td class="muted">2026-02-18</td>
+                    <td class="muted">REQ-0027</td>
+                    <td>Hound ×8</td>
+                    <td class="isk">496,000,000</td>
+                    <td class="green">74,400,000</td>
+                    <td><span class="badge badge-complete">Paid</span></td>
+                </tr>
+                <tr>
+                    <td class="muted">2026-02-05</td>
+                    <td class="muted">REQ-0022</td>
+                    <td>Cerberus ×3</td>
+                    <td class="isk">375,000,000</td>
+                    <td class="green">56,250,000</td>
+                    <td><span class="badge badge-complete">Paid</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div><!-- /tab-builder -->
+
+<!-- Deliver modal (hidden) -->
+<div id="deliverModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center">
+    <div style="background:#001830;border:1px solid #00d9ff;padding:32px;max-width:480px;width:90%">
+        <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:#00d9ff;margin-bottom:18px">Mark Job Delivered — REQ-0042</div>
+        <div class="field" style="margin-bottom:16px">
+            <label>EVE Contract ID</label>
+            <input type="text" placeholder="Paste the contract ID from EVE">
+        </div>
+        <div class="field" style="margin-bottom:22px">
+            <label>Notes</label>
+            <textarea placeholder="Any notes for Hamektok"></textarea>
+        </div>
+        <div style="display:flex;gap:12px">
+            <button class="btn btn-primary btn-sm">Confirm Delivery</button>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('deliverModal').style.display='none'">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showDeliverModal() {
+        const m = document.getElementById('deliverModal');
+        m.style.display = 'flex';
+    }
+</script>
